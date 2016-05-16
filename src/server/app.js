@@ -6,13 +6,28 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var swig = require('swig');
+var mongoose = require('mongoose');
+var config = require('../_config');
 
 // *** routes *** //
 var routes = require('./routes/index.js');
 var apiRoutes = require('./routes/api.js');
 
+var environment = process.env.NODE_ENV || 'development';
+if (!process.env.NODE_ENV) {
+  var mongoURI = config.mongoURI[environment];
+} else {
+  var mongoURI = process.env.MONGODB_URI;
+}
+
 // *** express instance *** //
 var app = express();
+
+mongoose.connect(mongoURI, function (err, res) {
+  if (err) {
+    console.log('Error connecting to the database. ' + err);
+  }
+});
 
 // *** view engine *** //
 var swig = new swig.Swig();
@@ -47,7 +62,7 @@ app.use(function (req, res, next) {
 if (app.get('env') === 'development') {
   app.use(function (err, req, res, next) {
     res.status(err.status || 500);
-    res.render('error', {
+    res.json({
       message: err.message,
       error: err,
     });
@@ -58,7 +73,7 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function (err, req, res, next) {
   res.status(err.status || 500);
-  res.render('error', {
+  res.json({
     message: err.message,
     error: {},
   });
