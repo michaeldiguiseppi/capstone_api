@@ -4,23 +4,22 @@ var Movie = require('../models/movies');
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 
-router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+router.get('/movies', getMovies);
+router.post('/movies', addMovie);
 
-router.get('/movies', function (req, res, next) {
-  console.log('got here');
+////////////////////////////////////
+
+function getMovies(req, res, next) {
   Movie.find().then(function (data) {
-    console.log(data);
     res.json({ message: 'Got movies', status: 'Success', data: data });
   });
-});
+}
 
-router.post('/movies', function (req, res, next) {
-  var movie = new Movie({ title: 'Titanic', release_year: 1997, rated: 'PG-13' });
-  movie.save().then(function () {
-    res.json({ message: 'Movie inserted.', status: 'Success' });
+function addMovie(req, res, next) {
+  var movie = new Movie(req.body);
+  movie.save().then(function (data) {
+    res.json({ message: 'Movie inserted.', status: 'Success', data: data });
   });
-});
+}
 
 module.exports = router;
