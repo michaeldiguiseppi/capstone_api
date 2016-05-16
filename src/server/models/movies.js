@@ -15,30 +15,6 @@ var MovieSchema = new Schema({
     type: String,
     required: true,
   },
-  runtime: {
-    type: String,
-  },
-  genre: {
-    type: String,
-  },
-  director: {
-    type: String,
-  },
-  writer: {
-    type: String,
-  },
-  actors: {
-    type: String,
-  },
-  poster: {
-    type: String,
-  },
-  imdbId: {
-    type: String,
-  },
-  imdbRating: {
-    type: String,
-  },
 });
 
 var Movie = mongoose.model('movies', MovieSchema);
