@@ -17,7 +17,8 @@ router.get('/movies', function (req, res, next) {
 });
 
 router.post('/movies', function (req, res, next) {
-  Movie.create({ title: 'Titanic', release_year: 1997, rated: 'PG-13' }).then(function () {
+  var movie = new Movie({ title: 'Titanic', release_year: 1997, rated: 'PG-13' });
+  movie.save().then(function () {
     res.json({ message: 'Movie inserted.', status: 'Success' });
   });
 });
