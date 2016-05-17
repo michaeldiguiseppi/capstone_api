@@ -28,9 +28,10 @@ function getTitle(req, res, next) {
   var upc = req.params.upc;
   var options = {
     method: 'GET',
-    url: 'http://localhost:5001/api/' + upc,
+    url: 'http://movie_api.mikedee.xyz/api/' + upc,
   };
   request(options, function (error, response, body) {
+    console.log(body);
     if (error) throw new Error(error);
 
     var title = JSON.parse(body)[0].DVD_Title.split('(')[0];
