@@ -4,6 +4,11 @@ var bcrypt = require('bcryptjs');
 var config = require('../../_config');
 
 var UserSchema = new Schema({
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   email: {
     type: String,
     required: true,
@@ -13,10 +18,8 @@ var UserSchema = new Schema({
     type: String,
     required: true,
   },
-  admin: {
-    type: Boolean,
-    required: true,
-    default: false,
+  movies: {
+    type: Array,
   },
 });
 
