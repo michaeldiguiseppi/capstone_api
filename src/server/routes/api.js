@@ -14,7 +14,10 @@ router.post('/insert', insertMovie);
 ////////////////////////////////////
 
 function getMovies(req, res, next) {
-
+  User.find({email: 'test@test.com'}).then(function(user) {
+    console.log(user[0]);
+    res.json(user[0].movies);
+  });
 }
 
 function addMovie(req, res, next) {
@@ -31,7 +34,12 @@ function getTitle(req, res, next) {
     console.log(body);
     if (error) throw new Error(error);
 
-    var title = JSON.parse(body)[0].DVD_Title.split('(')[0];
+    if (JSON.parse(body)[0].DVD_Title) {
+      var title = JSON.parse(body)[0].DVD_Title.split('(')[0];
+    } else {
+      console.log('Error', body);
+    }
+
     var options = {
       method: 'GET',
       url: 'http://omdbapi.com/?t=' + title,
@@ -48,6 +56,7 @@ function insertMovie(req, res, next) {
   var movie = new Movie(req.body);
   User.find({email: 'test@test.com'}).update({$addToSet: {movies: movie}}).then(function(user) {
     console.log(user);
+    res.json(user);
   });
   console.log(movie);
 }
