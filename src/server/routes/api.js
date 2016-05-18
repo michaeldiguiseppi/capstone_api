@@ -34,21 +34,20 @@ function getTitle(req, res, next) {
     console.log(body);
     if (error) throw new Error(error);
 
-    if (JSON.parse(body)[0].DVD_Title) {
+    if (JSON.parse(body)[0]) {
       var title = JSON.parse(body)[0].DVD_Title.split('(')[0];
+      var options = {
+        method: 'GET',
+        url: 'http://omdbapi.com/?t=' + title,
+      };
+      request(options, function (err, resp, bod) {
+        if (err) throw new Error(err);
+        console.log(JSON.parse(bod));
+        res.json(JSON.parse(bod));
+      });
     } else {
-      console.log('Error', body);
+      res.json({status: 'Error', data: 'Something went wrong.'});
     }
-
-    var options = {
-      method: 'GET',
-      url: 'http://omdbapi.com/?t=' + title,
-    };
-    request(options, function (err, resp, bod) {
-      if (err) throw new Error(err);
-      console.log(JSON.parse(bod));
-      res.json(JSON.parse(bod));
-    });
   });
 }
 
