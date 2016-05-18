@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Movie = require('../models/movies');
+var User = require('../models/users');
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 var request = require('request');
@@ -8,20 +9,16 @@ var request = require('request');
 router.get('/movies', getMovies);
 router.post('/movies', addMovie);
 router.get('/:upc', getTitle);
+router.post('/insert', insertMovie);
 
 ////////////////////////////////////
 
 function getMovies(req, res, next) {
-  Movie.find().then(function (data) {
-    res.json({ message: 'Got movies', status: 'Success', data: data });
-  });
+
 }
 
 function addMovie(req, res, next) {
   var movie = new Movie(req.body);
-  movie.save().then(function (data) {
-    res.json({ message: 'Movie inserted.', status: 'Success', data: data });
-  });
 }
 
 function getTitle(req, res, next) {
@@ -45,6 +42,14 @@ function getTitle(req, res, next) {
       res.json(JSON.parse(bod));
     });
   });
+}
+
+function insertMovie(req, res, next) {
+  var movie = new Movie(req.body);
+  User.find({email: 'test@test.com'}).update({$addToSet: {movies: movie}}).then(function(user) {
+    console.log(user);
+  });
+  console.log(movie);
 }
 
 module.exports = router;
