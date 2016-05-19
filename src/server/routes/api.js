@@ -5,11 +5,13 @@ var User = require('../models/users');
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 var request = require('request');
+var config = require('../../_config');
 
 router.get('/movies', getMovies);
-router.post('/movies', addMovie);
 router.get('/:upc', getTitle);
 router.post('/insert', insertMovie);
+router.get('/movie/:title', getMovie);
+router.get('/streaming/:id', getStreamingSources);
 
 ////////////////////////////////////
 
@@ -18,10 +20,6 @@ function getMovies(req, res, next) {
     console.log(user[0]);
     res.json(user[0].movies);
   });
-}
-
-function addMovie(req, res, next) {
-  var movie = new Movie(req.body);
 }
 
 function getTitle(req, res, next) {
@@ -58,6 +56,23 @@ function insertMovie(req, res, next) {
     res.json(user);
   });
   console.log(movie);
+}
+
+function getMovie(req, res, next) {
+  var title = req.params.title;
+  var options = {
+    method: 'GET',
+    url: 'http://omdbapi.com/?t=' + title,
+  };
+  request(options, function (err, resp, bod) {
+    if (err) throw new Error(err);
+    console.log(JSON.parse(bod));
+    res.json(JSON.parse(bod));
+  });
+}
+
+function getStreamingSources(req, res, next) {
+  // 'https://api-public.guidebox.com/v1.43/US/' + config.GUIDEBOX_KEY + '/search/movie/id/imdb/' + req.params.id
 }
 
 module.exports = router;
