@@ -11,7 +11,8 @@ router.get('/movies', getMovies);
 router.get('/:upc', getTitle);
 router.post('/insert', insertMovie);
 router.get('/movie/:title', getMovie);
-router.get('/streaming/:id', getStreamingSources);
+router.get('/streaming/:id/:type', getStreamingSources);
+router.put('/delete/:id/:user_id', deleteMovie);
 
 ////////////////////////////////////
 
@@ -72,7 +73,61 @@ function getMovie(req, res, next) {
 }
 
 function getStreamingSources(req, res, next) {
+  var type = req.params.type;
+  var id = req.params.id;
+  var baseUrl = 'https://api-public.guidebox.com/v1.43/US/' + config.GUIDEBOX_KEY;
+  var options;
+  var second_url;
+  if (type === 'movie') {
+    options = {
+      method: 'GET',
+      url: baseUrl + '/search/movie/id/imdb/' + id,
+    };
+    second_url = '/movie/';
+  } else {
+    options = {
+      method: 'GET',
+      url: baseUrl + '/search/id/imdb/' + id,
+    };
+    second_url = '/show/';
+  }
+  request(options, function(error, response, body) {
+    if (error) throw new Error(error);
+    var guideboxId = JSON.parse(body).id;
+    var options = {
+      method: 'GET',
+      url: baseUrl + second_url + guideboxId,
+    };
+
+    request(options, function(err, resp, bod) {
+      if (err) throw new Error(err);
+      res.json(JSON.parse(bod));
+    });
+  });
   // 'https://api-public.guidebox.com/v1.43/US/' + config.GUIDEBOX_KEY + '/search/movie/id/imdb/' + req.params.id
+}
+
+function deleteMatch (req, res) {
+  var query = { _id: req.params.id };
+  var options = { new: true };
+
+  return Member.findOneAndUpdate(query, {
+    $pull: { _matches: req.params.matchId }
+  }, options).exec()
+  .then(handlers.success(res, 200))
+  .catch(handlers.error(res, 404));
+}
+
+function deleteMovie(req, res, next) {
+  var query = { _id: req.params.user_id };
+  var options = { new: true };
+
+  User.findOneAndUpdate(query, { $pull: { movies: { imdbID: req.params.id }}}, {new: true})
+  .then(function(data) {
+    res.json({status: 'success', data: data});
+  }).catch(function(err) {
+    res.json({status: 'danger', data: err});
+  });
 }
 
 module.exports = router;
