@@ -44,6 +44,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../client')));
 
+// *** allow for front-end requests *** //
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, api_key, Authorization, Accept, *");
+  next();
+});
+
+
+
 // *** main routes *** //
 app.use('/', routes);
 app.use('/api', apiRoutes);
