@@ -7,6 +7,21 @@ mongoose.Promise = require('bluebird');
 var request = require('request');
 var config = require('../../_config');
 
+
+/*
+  Make users routes and movies routes
+    - prefix user routes with :user_id
+    - movie routes can be accessed without logging in.
+    - if accessing a protected route, redirect to login (this will be client-side)
+
+    app.use('/users', userRoutes);
+    /:user_id/movies/
+
+    within here, i can have a movie route for collection
+
+    app.use('/movies', movieRoutes);
+    /movies/get
+*/
 router.get('/movies', getMovies);
 router.get('/:upc', getTitle);
 router.post('/insert', insertMovie);
