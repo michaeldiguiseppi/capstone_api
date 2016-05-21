@@ -12,6 +12,9 @@ var config = require('../_config');
 // *** routes *** //
 var routes = require('./routes/index.js');
 var apiRoutes = require('./routes/api.js');
+var authRoutes = require('./routes/auth.js');
+var movieRoutes = require('./routes/movies.js');
+var userRoutes = require('./routes/users.js');
 
 var environment = process.env.NODE_ENV || 'development';
 if (!process.env.NODE_ENV) {
