@@ -60,6 +60,9 @@ app.use(function(req, res, next) {
 // *** main routes *** //
 app.use('/', routes);
 app.use('/api', apiRoutes);
+app.use('/auth', authRoutes);
+app.use('/users', userRoutes);
+app.use('/movies', movieRoutes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
