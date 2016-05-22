@@ -16,19 +16,19 @@ router.put('/:user_id/movie/:id/delete', deleteMovie);
 ///////////////////////////////////////////////////////////
 
 function getMovies(req, res, next) {
-  User.find({email: 'test@test.com'}).then(function(user) {
-    console.log(user[0]);
+  User.findById(req.params.user_id).then(function(user) {
+    console.log(user);
     res.json(user[0].movies);
   });
 }
 
 function insertMovie(req, res, next) {
   var movie = new Movie(req.body);
-  User.find({email: 'test@test.com'}).update({$addToSet: {movies: movie}}).then(function(user) {
-    console.log(user);
+  User.findById(req.params.user_id)
+  .update({$addToSet: {movies: movie}})
+  .then(function(user) {
     res.json(user);
   });
-  console.log(movie);
 }
 
 
