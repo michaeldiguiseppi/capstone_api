@@ -5,8 +5,7 @@ var User = require('../models/users');
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 var request = require('request');
-var config = require('../../_config');
-
+if (process.env.NODE_ENV !== 'production') { var config = require('../../_config'); }
 
 router.get('/:user_id/movies', getMovies);
 router.post('/:user_id/movie/add', insertMovie);
@@ -18,7 +17,7 @@ router.put('/:user_id/movie/:id/delete', deleteMovie);
 function getMovies(req, res, next) {
   User.findById(req.params.user_id).then(function(user) {
     console.log(user);
-    res.json(user[0].movies);
+    res.json(user.movies);
   });
 }
 
@@ -35,7 +34,7 @@ function insertMovie(req, res, next) {
 function getStreamingSources(req, res, next) {
   var type = req.params.type;
   var id = req.params.id;
-  var baseUrl = 'https://api-public.guidebox.com/v1.43/US/' + config.GUIDEBOX_KEY;
+  var baseUrl = 'https://api-public.guidebox.com/v1.43/US/' + process.env.GUIDEBOX_KEY;
   var options;
   var second_url;
   if (type === 'movie') {
