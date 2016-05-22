@@ -15,8 +15,18 @@ router.post('/register', function(req, res, next) {
         data: member
       });
     })
-    .then(handlers.success(res, 201))
-    .catch(handlers.error(res, 422));
+    .then(function(data) {
+      res.status(201).json({
+        status: 'success',
+        message: data
+      });
+    })
+    .catch(function(err) {
+      res.status(422).json({
+        status: 'danger',
+        message: err
+      });
+    });
 });
 
 router.post('/login', function (req, res, next) {
