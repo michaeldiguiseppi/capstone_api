@@ -122,16 +122,6 @@ function getStreamingSources(req, res, next) {
   // 'https://api-public.guidebox.com/v1.43/US/' + config.GUIDEBOX_KEY + '/search/movie/id/imdb/' + req.params.id
 }
 
-function deleteMatch (req, res) {
-  var query = { _id: req.params.id };
-  var options = { new: true };
-
-  return Member.findOneAndUpdate(query, {
-    $pull: { _matches: req.params.matchId }
-  }, options).exec()
-  .then(handlers.success(res, 200))
-  .catch(handlers.error(res, 404));
-}
 
 function deleteMovie(req, res, next) {
   var query = { _id: req.params.user_id };
