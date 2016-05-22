@@ -5,8 +5,8 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var swig = require('swig');
 var mongoose = require('mongoose');
+require('dotenv').config();
 if (process.env.NODE_ENV !== 'production') { var config = require('../_config'); }
 
 // *** routes *** //
@@ -32,14 +32,6 @@ mongoose.connect(mongoURI, function (err, res) {
   }
 });
 
-// *** view engine *** //
-var swig = new swig.Swig();
-app.engine('html', swig.renderFile);
-app.set('view engine', 'html');
-
-// *** static directory *** //
-app.set('views', path.join(__dirname, 'views'));
-
 // *** config middleware *** //
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -54,8 +46,6 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, api_key, Authorization, Accept, *");
   next();
 });
-
-
 
 // *** main routes *** //
 app.use('/', routes);
