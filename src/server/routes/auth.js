@@ -3,7 +3,6 @@ var router = express.Router();
 var User = require('../models/users');
 var moment = require('moment');
 var jwt = require('jwt-simple');
-var Promise = require('bluebird');
 
 router.post('/register', function(req, res, next) {
   // ensure user does not already exist
