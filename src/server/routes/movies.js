@@ -5,7 +5,6 @@ var User = require('../models/users');
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 var request = require('request');
-if (process.env.NODE_ENV !== 'production') { var config = require('../../_config'); }
 
 router.get('/:upc', getTitle);
 router.get('/find/:title', getMovie);
