@@ -7,6 +7,7 @@ mongoose.Promise = require('bluebird');
 var request = require('request');
 if (process.env.NODE_ENV !== 'production') { var config = require('../../_config'); }
 
+
 router.get('/:user_id/movies', getMovies);
 router.post('/:user_id/movie/add', insertMovie);
 router.get('/:user_id/streaming/:id/:type', getStreamingSources);
@@ -15,9 +16,13 @@ router.put('/:user_id/movie/:id/delete', deleteMovie);
 ///////////////////////////////////////////////////////////
 
 function getMovies(req, res, next) {
-  User.findById(req.params.user_id).then(function(user) {
+  User.findById(req.params.user_id)
+  .then(function(user) {
     console.log(user);
-    res.json(user.movies);
+    res.status(200).json(user.movies);
+  })
+  .catch(function(err) {
+    res.status(404).json({status: 'danger', data: 'User or Movies not found.'});
   });
 }
 
@@ -26,7 +31,9 @@ function insertMovie(req, res, next) {
   User.findById(req.params.user_id)
   .update({$addToSet: {movies: movie}})
   .then(function(user) {
-    res.json(user);
+    res.status(200).json(user);
+  }).catch(function(err) {
+    res.status(400).json({status: 'danger', data: 'Movie failed to insert.  Please try again.'});
   });
 }
 
@@ -60,7 +67,7 @@ function getStreamingSources(req, res, next) {
 
     request(options, function(err, resp, bod) {
       if (err) throw new Error(err);
-      res.json(JSON.parse(bod));
+      res.status(200).json(JSON.parse(bod));
     });
   });
 }
@@ -71,9 +78,10 @@ function deleteMovie(req, res, next) {
 
   User.findOneAndUpdate(query, { $pull: { movies: { imdbID: req.params.id }}}, {new: true})
   .then(function(data) {
-    res.json({status: 'success', data: data});
-  }).catch(function(err) {
-    res.json({status: 'danger', data: err});
+    res.status(200).json({status: 'success', data: data});
+  })
+  .catch(function(err) {
+    res.status(400).json({status: 'danger', data: err});
   });
 }
 
