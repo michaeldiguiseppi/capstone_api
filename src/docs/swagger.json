@@ -1,0 +1,793 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "version" : "1.0.0",
+    "title" : "MMDB Movie API"
+  },
+  "host" : "localhost",
+  "basePath" : "/",
+  "schemes" : [ "http" ],
+  "produces" : [ "application/json" ],
+  "paths" : {
+    "/auth/login" : {
+      "post" : {
+        "tags" : [ "Auth" ],
+        "description" : "Logs in a `user`.\n",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200"
+            }
+          },
+          "400" : {
+            "description" : "Error response",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_400"
+            }
+          }
+        }
+      }
+    },
+    "/auth/register" : {
+      "post" : {
+        "tags" : [ "Auth" ],
+        "description" : "Registers a new `user`.\n",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_1"
+            }
+          },
+          "400" : {
+            "description" : "Error response",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_400_1"
+            }
+          }
+        }
+      }
+    },
+    "/movies/find/{title}" : {
+      "get" : {
+        "tags" : [ "Movies" ],
+        "description" : "Gets a `movie` based on query param **title**\n then queries OMDB API for `movie` information.\n",
+        "parameters" : [ {
+          "name" : "title",
+          "in" : "path",
+          "description" : "Title of the movie",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_2"
+            }
+          }
+        }
+      }
+    },
+    "/movies/{upc}" : {
+      "get" : {
+        "tags" : [ "Movies" ],
+        "description" : "Gets a title of a `movie` based on query param **upc**\n then queries OMDB API for `movie` information.\n",
+        "parameters" : [ {
+          "name" : "upc",
+          "in" : "path",
+          "description" : "UPC for movie",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_2"
+            }
+          },
+          "400" : {
+            "description" : "Error response",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_400_2"
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/movie/add" : {
+      "post" : {
+        "tags" : [ "Users" ],
+        "description" : "Inserts a `movie` object.\nQuery param of **user_id** determines the\nuser to insert the movie for.\n",
+        "parameters" : [ {
+          "name" : "user_id",
+          "in" : "path",
+          "description" : "ID of User",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_3"
+            }
+          },
+          "400" : {
+            "description" : "Error response",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_400_2"
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/movie/{id}/delete" : {
+      "put" : {
+        "tags" : [ "Users" ],
+        "description" : "Deletes a `movie` from the user's collection.\nQuery param of **user_id** determines the\nuser to delete the movie from.\n",
+        "parameters" : [ {
+          "name" : "user_id",
+          "in" : "path",
+          "description" : "ID of User",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID of Movie",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_4"
+            }
+          },
+          "400" : {
+            "description" : "Error response",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_400_2"
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/movies" : {
+      "get" : {
+        "tags" : [ "Users" ],
+        "description" : "Gets `Movies` object.\nQuery param of **user_id** determines the\nuser to return movies for.\n",
+        "parameters" : [ {
+          "name" : "user_id",
+          "in" : "path",
+          "description" : "ID of User",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "schema" : {
+              "type" : "array",
+              "title" : "ArrayOfMovies",
+              "items" : {
+                "$ref" : "#/definitions/inline_response_200_2"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Error response",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_400_2"
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/streaming/{id}/{type}" : {
+      "get" : {
+        "tags" : [ "Users" ],
+        "description" : "Finds streaming sources for a `movie`.\nQuery param of **user_id** determines the\nuser querying for streaming sources.\n",
+        "parameters" : [ {
+          "name" : "user_id",
+          "in" : "path",
+          "description" : "ID of User",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID of movie to search",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "type",
+          "in" : "path",
+          "description" : "Type of media searching for (movie or series)",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_5"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "inline_response_200_data_user" : {
+      "properties" : {
+        "movies" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "title" : "movie",
+            "properties" : { }
+          }
+        },
+        "_id" : {
+          "type" : "string"
+        },
+        "email" : {
+          "type" : "string"
+        },
+        "username" : {
+          "type" : "string"
+        }
+      }
+    },
+    "inline_response_200_1_message" : {
+      "properties" : {
+        "data" : {
+          "$ref" : "#/definitions/inline_response_200_1_message_data"
+        },
+        "token" : {
+          "type" : "string"
+        }
+      }
+    },
+    "inline_response_200_5_genres" : {
+      "properties" : {
+        "id" : {
+          "type" : "integer"
+        },
+        "title" : {
+          "type" : "string"
+        }
+      }
+    },
+    "inline_response_400_1_message" : {
+      "properties" : {
+        "op" : {
+          "$ref" : "#/definitions/inline_response_400_1_message_op"
+        },
+        "code" : {
+          "type" : "integer"
+        },
+        "index" : {
+          "type" : "integer"
+        },
+        "errmsg" : {
+          "type" : "string"
+        }
+      }
+    },
+    "inline_response_200_5_purchase_web_sources" : {
+      "properties" : {
+        "formats" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_200_5_formats"
+          }
+        },
+        "link" : {
+          "type" : "string"
+        },
+        "source" : {
+          "type" : "string"
+        },
+        "display_name" : {
+          "type" : "string"
+        }
+      }
+    },
+    "inline_response_200" : {
+      "properties" : {
+        "data" : {
+          "$ref" : "#/definitions/inline_response_200_data"
+        },
+        "status" : {
+          "type" : "string"
+        }
+      }
+    },
+    "inline_response_400_2" : {
+      "properties" : {
+        "data" : {
+          "type" : "string"
+        },
+        "status" : {
+          "type" : "string"
+        }
+      }
+    },
+    "inline_response_400" : {
+      "properties" : {
+        "requestBody" : {
+          "$ref" : "#/definitions/inline_response_400_requestBody"
+        },
+        "message" : {
+          "type" : "string"
+        },
+        "status" : {
+          "type" : "string"
+        }
+      }
+    },
+    "inline_response_400_1" : {
+      "properties" : {
+        "message" : {
+          "$ref" : "#/definitions/inline_response_400_1_message"
+        },
+        "status" : {
+          "type" : "string"
+        }
+      }
+    },
+    "inline_response_200_5" : {
+      "properties" : {
+        "free_web_sources" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_200_5_free_web_sources"
+          }
+        },
+        "directors" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_200_5_directors"
+          }
+        },
+        "rating" : {
+          "type" : "string"
+        },
+        "metacritic" : {
+          "type" : "string"
+        },
+        "poster_400x570" : {
+          "type" : "string"
+        },
+        "pre_order" : {
+          "type" : "boolean"
+        },
+        "title" : {
+          "type" : "string"
+        },
+        "free_android_sources" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_200_5_free_web_sources"
+          }
+        },
+        "subscription_web_sources" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_200_5_free_web_sources"
+          }
+        },
+        "purchase_web_sources" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_200_5_purchase_web_sources"
+          }
+        },
+        "duration" : {
+          "type" : "integer"
+        },
+        "themoviedb" : {
+          "type" : "integer"
+        },
+        "cast" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_200_5_cast"
+          }
+        },
+        "free_ios_sources" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_200_5_free_web_sources"
+          }
+        },
+        "imdb" : {
+          "type" : "string"
+        },
+        "genres" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_200_5_genres"
+          }
+        },
+        "poster_120x171" : {
+          "type" : "string"
+        },
+        "id" : {
+          "type" : "integer"
+        },
+        "common_sense_media" : {
+          "type" : "string"
+        },
+        "tv_everywhere_ios_sources" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_200_5_free_web_sources"
+          }
+        },
+        "rottentomatoes" : {
+          "type" : "integer"
+        },
+        "purchase_ios_sources" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_200_5_purchase_web_sources"
+          }
+        },
+        "overview" : {
+          "type" : "string"
+        },
+        "original_title" : {
+          "type" : "string"
+        },
+        "in_theaters" : {
+          "type" : "boolean"
+        },
+        "social" : {
+          "$ref" : "#/definitions/inline_response_200_5_social"
+        },
+        "release_year" : {
+          "type" : "integer"
+        },
+        "freebase" : {
+          "type" : "string"
+        },
+        "subscription_ios_sources" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_200_5_free_web_sources"
+          }
+        },
+        "subscription_android_sources" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_200_5_free_web_sources"
+          }
+        },
+        "writers" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_200_5_directors"
+          }
+        },
+        "poster_240x342" : {
+          "type" : "string"
+        },
+        "tags" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_200_5_tags"
+          }
+        },
+        "trailers" : {
+          "$ref" : "#/definitions/inline_response_200_5_trailers"
+        },
+        "tv_everywhere_web_sources" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_200_5_free_web_sources"
+          }
+        },
+        "alternate_titles" : {
+          "type" : "array"
+        },
+        "wikipedia_id" : {
+          "type" : "integer"
+        },
+        "tv_everywhere_android_sources" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_200_5_free_web_sources"
+          }
+        },
+        "purchase_android_sources" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_200_5_purchase_web_sources"
+          }
+        },
+        "other_sources" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_200_5_purchase_web_sources"
+          }
+        }
+      }
+    },
+    "inline_response_200_1_message_data" : {
+      "properties" : {
+        "movies" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "title" : "movie",
+            "properties" : { }
+          }
+        },
+        "password" : {
+          "type" : "string"
+        },
+        "email" : {
+          "type" : "string"
+        },
+        "username" : {
+          "type" : "string"
+        }
+      }
+    },
+    "inline_response_200_5_social" : {
+      "properties" : {
+        "facebook" : {
+          "$ref" : "#/definitions/inline_response_200_5_social_facebook"
+        }
+      }
+    },
+    "inline_response_200_5_trailers" : {
+      "properties" : {
+        "web" : {
+          "type" : "array"
+        },
+        "android" : {
+          "type" : "array"
+        },
+        "ios" : {
+          "type" : "array"
+        }
+      }
+    },
+    "inline_response_200_data" : {
+      "properties" : {
+        "user" : {
+          "$ref" : "#/definitions/inline_response_200_data_user"
+        },
+        "token" : {
+          "type" : "string"
+        }
+      }
+    },
+    "inline_response_200_5_directors" : {
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "id" : {
+          "type" : "integer"
+        }
+      }
+    },
+    "inline_response_200_5_tags" : {
+      "properties" : {
+        "id" : {
+          "type" : "integer"
+        },
+        "tag" : {
+          "type" : "string"
+        }
+      }
+    },
+    "inline_response_200_5_social_facebook" : {
+      "properties" : {
+        "link" : {
+          "type" : "string"
+        },
+        "facebook_id" : {
+          "type" : "integer"
+        }
+      }
+    },
+    "inline_response_400_1_message_op" : {
+      "properties" : {
+        "movies" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "title" : "movie",
+            "properties" : { }
+          }
+        },
+        "password" : {
+          "type" : "string"
+        },
+        "_id" : {
+          "type" : "string"
+        },
+        "email" : {
+          "type" : "string"
+        },
+        "username" : {
+          "type" : "string"
+        }
+      }
+    },
+    "inline_response_200_5_formats" : {
+      "properties" : {
+        "price" : {
+          "type" : "string"
+        },
+        "format" : {
+          "type" : "string"
+        },
+        "pre_order" : {
+          "type" : "boolean"
+        },
+        "type" : {
+          "type" : "string"
+        }
+      }
+    },
+    "inline_response_200_5_cast" : {
+      "properties" : {
+        "character_name" : {
+          "type" : "string"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "id" : {
+          "type" : "integer"
+        }
+      }
+    },
+    "inline_response_200_1" : {
+      "properties" : {
+        "message" : {
+          "$ref" : "#/definitions/inline_response_200_1_message"
+        },
+        "status" : {
+          "type" : "string"
+        }
+      }
+    },
+    "inline_response_400_requestBody" : {
+      "properties" : {
+        "password" : {
+          "type" : "string"
+        },
+        "email" : {
+          "type" : "string"
+        }
+      }
+    },
+    "inline_response_200_2" : {
+      "properties" : {
+        "Released" : {
+          "type" : "string"
+        },
+        "Metascore" : {
+          "type" : "string"
+        },
+        "imdbID" : {
+          "type" : "string"
+        },
+        "Plot" : {
+          "type" : "string"
+        },
+        "Director" : {
+          "type" : "string"
+        },
+        "Title" : {
+          "type" : "string"
+        },
+        "Actors" : {
+          "type" : "string"
+        },
+        "imdbRating" : {
+          "type" : "string"
+        },
+        "imdbVotes" : {
+          "type" : "string"
+        },
+        "Response" : {
+          "type" : "string"
+        },
+        "Runtime" : {
+          "type" : "string"
+        },
+        "Type" : {
+          "type" : "string"
+        },
+        "Awards" : {
+          "type" : "string"
+        },
+        "Year" : {
+          "type" : "string"
+        },
+        "Language" : {
+          "type" : "string"
+        },
+        "Rated" : {
+          "type" : "string"
+        },
+        "Poster" : {
+          "type" : "string"
+        },
+        "Country" : {
+          "type" : "string"
+        },
+        "Genre" : {
+          "type" : "string"
+        },
+        "Writer" : {
+          "type" : "string"
+        }
+      }
+    },
+    "inline_response_200_3" : {
+      "properties" : {
+        "Email" : {
+          "type" : "string"
+        },
+        "Username" : {
+          "type" : "string"
+        },
+        "Movies" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "title" : "Movie",
+            "properties" : { }
+          }
+        }
+      }
+    },
+    "inline_response_200_4" : {
+      "properties" : {
+        "Email" : {
+          "type" : "string"
+        },
+        "Username" : {
+          "type" : "string"
+        },
+        "Movies" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "title" : "movie",
+            "properties" : { }
+          }
+        }
+      }
+    },
+    "inline_response_200_5_free_web_sources" : {
+      "properties" : {
+        "link" : {
+          "type" : "string"
+        },
+        "source" : {
+          "type" : "string"
+        },
+        "display_name" : {
+          "type" : "string"
+        }
+      }
+    }
+  }
+}
