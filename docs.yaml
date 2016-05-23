@@ -9,6 +9,140 @@ info:
   title: MMDB Movie API
 # Describe your paths here
 paths:
+  /auth/register:
+    # This is a HTTP operation
+    post:
+      # Describe this verb here. Note: you can use markdown
+      tags: [Auth]
+      description: |
+        Registers a new `user`.
+      # This is array of GET operation parameters:
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            title: UserObject
+            type: object
+            properties:
+              status:
+                type: string
+              message:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      username:
+                        type: string
+                      email:
+                        type: string
+                      password:
+                        type: string
+                      movies:
+                        type: array
+                        items:
+                          title: movie
+                          type: object
+        400:
+          description: Error response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            title: UserObject
+            type: object
+            properties:
+              status:
+                type: string
+              message:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  index:
+                    type: integer
+                  errmsg:
+                    type: string
+                  op:
+                    type: object
+                    properties:
+                      username:
+                        type: string
+                      email:
+                        type: string
+                      password:
+                        type: string
+                      movies:
+                        type: array
+                        items:
+                          title: movie
+                          type: object
+                      _id:
+                        type: string
+  /auth/login:
+    # This is a HTTP operation
+    post:
+      # Describe this verb here. Note: you can use markdown
+      tags: [Auth]
+      description: |
+        Logs in a `user`.
+      # This is array of GET operation parameters:
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            title: UserObject
+            type: object
+            properties:
+              status:
+                type: string
+              data:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      username:
+                        type: string
+                      email:
+                        type: string
+                      movies:
+                        type: array
+                        items:
+                          title: movie
+                          type: object
+                      _id:
+                        type: string
+        400:
+          description: Error response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            title: UserObject
+            type: object
+            properties:
+              status:
+                type: string
+              message:
+                type: string
+              requestBody:
+                type: object
+                properties:
+                  email:
+                    type: string
+                  password:
+                    type: string
   /users/{user_id}/movies:
     # This is a HTTP operation
     get:
@@ -93,7 +227,6 @@ paths:
                 type: string
               data:
                 type: string
-
   /users/{user_id}/movie/add:
     # This is a HTTP operation
     post:
