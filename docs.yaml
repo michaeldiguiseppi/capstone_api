@@ -1,0 +1,719 @@
+# Example YAML to get you started quickly.
+# Be aware that YAML has indentation based scoping.
+# Code completion support is available so start typing for available options.
+swagger: '2.0'
+
+# This is your document metadata
+info:
+  version: "1.0.0"
+  title: MMDB Movie API
+# Describe your paths here
+paths:
+  /users/{user_id}/movies:
+    # This is a HTTP operation
+    get:
+      # Describe this verb here. Note: you can use markdown
+      tags: [Users]
+      description: |
+        Gets `Movies` object.
+        Query param of **user_id** determines the
+        user to return movies for.
+      # This is array of GET operation parameters:
+      parameters:
+        # An example parameter that is in query and is required
+        -
+          name: user_id
+          in: path
+          description: ID of User
+          required: true
+          type: string
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            title: ArrayOfMovies
+            type: array
+            items:
+              title: Movie
+              type: object
+              properties:
+                Title:
+                  type: string
+                Year:
+                  type: string
+                Rated:
+                  type: string
+                Released:
+                  type: string
+                Runtime:
+                  type: string
+                Genre:
+                  type: string
+                Director:
+                  type: string
+                Writer:
+                  type: string
+                Actors:
+                  type: string
+                Plot:
+                  type: string
+                Language:
+                  type: string
+                Country:
+                  type: string
+                Awards:
+                  type: string
+                Poster:
+                  type: string
+                Metascore:
+                  type: string
+                imdbRating:
+                  type: string
+                imdbVotes:
+                  type: string
+                imdbID:
+                  type: string
+                Type:
+                  type: string
+                Response:
+                  type: string
+        400:
+          description: Error response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            title: Error Object
+            type: object
+            properties:
+              status:
+                type: string
+              data:
+                type: string
+
+  /users/{user_id}/movie/add:
+    # This is a HTTP operation
+    post:
+      # Describe this verb here. Note: you can use markdown
+      tags: [Users]
+      description: |
+        Inserts a `movie` object.
+        Query param of **user_id** determines the
+        user to insert the movie for.
+      # This is array of GET operation parameters:
+      parameters:
+        # An example parameter that is in query and is required
+        -
+          name: user_id
+          in: path
+          description: ID of User
+          required: true
+          type: string
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            title: UserObject
+            type: object
+            properties:
+              Username:
+                type: string
+              Email:
+                type: string
+              Movies:
+                type: array
+                items:
+                  title: Movie
+                  type: object
+        400:
+          description: Error response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            title: Error Object
+            type: object
+            properties:
+              status:
+                type: string
+              data:
+                type: string
+  /users/{user_id}/streaming/{id}/{type}:
+    # This is a HTTP operation
+    get:
+      # Describe this verb here. Note: you can use markdown
+      tags: [Users]
+      description: |
+        Finds streaming sources for a `movie`.
+        Query param of **user_id** determines the
+        user querying for streaming sources.
+      # This is array of GET operation parameters:
+      parameters:
+        # An example parameter that is in query and is required
+        -
+          name: user_id
+          in: path
+          description: ID of User
+          required: true
+          type: string
+        -
+          name: id
+          in: path
+          description: ID of movie to search
+          required: true
+          type: string
+        -
+          name: type
+          in: path
+          description: Type of media searching for (movie or series)
+          required: true
+          type: string
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            title: StreamingObject
+            type: object
+            properties:
+              id:
+                type: integer
+              title:
+                type: string
+              release_year:
+                type: integer
+              themoviedb:
+                type: integer
+              original_title:
+                type: string
+              alternate_titles:
+                type: array
+                items:
+                  title: Title
+              imdb:
+                type: string
+              pre_order:
+                type: boolean
+              in_theaters:
+                type: boolean
+              release_date:
+                type: date
+              rating:
+                type: string
+              rottentomatoes:
+                type: integer
+              freebase:
+                type: string
+              wikipedia_id:
+                type: integer
+              metacritic:
+                type: string
+              common_sense_media:
+                type: string
+              overview:
+                type: string
+              poster_120x171:
+                type: string
+              poster_240x342:
+                type: string
+              poster_400x570:
+                type: string
+              social:
+                type: object
+                properties:
+                  facebook:
+                    type: object
+                    properties:
+                      facebook_id:
+                        type: integer
+                      link:
+                        type: string
+              genres:
+                type: array
+                items:
+                  title: genre
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+              tags:
+                type: array
+                items:
+                  title: tag
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    tag:
+                      type: string
+              duration:
+                type: integer
+              trailers:
+                type: object
+                properties:
+                  web:
+                    type: array
+                    items:
+                      title: trailer
+                  ios:
+                    type: array
+                    items:
+                      title: trailer
+                  android:
+                    type: array
+                    items:
+                      title: trailer
+              writers:
+                type: array
+                items:
+                  title: writer
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+              directors:
+                type: array
+                items:
+                  title: director
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+              cast:
+                type: array
+                items:
+                  title: actor
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    character_name:
+                      type: string
+              free_web_sources:
+                type: array
+                items:
+                  title: source
+                  type: object
+                  properties:
+                    source:
+                      type: string
+                    display_name:
+                      type: string
+                    link:
+                      type: string
+              free_ios_sources:
+                type: array
+                items:
+                  title: source
+                  type: object
+                  properties:
+                    source:
+                      type: string
+                    display_name:
+                      type: string
+                    link:
+                      type: string
+              free_android_sources:
+                type: array
+                items:
+                  title: source
+                  type: object
+                  properties:
+                    source:
+                      type: string
+                    display_name:
+                      type: string
+                    link:
+                      type: string
+              tv_everywhere_web_sources:
+                type: array
+                items:
+                  title: source
+                  type: object
+                  properties:
+                    source:
+                      type: string
+                    display_name:
+                      type: string
+                    link:
+                      type: string
+              tv_everywhere_ios_sources:
+                type: array
+                items:
+                  title: source
+                  type: object
+                  properties:
+                    source:
+                      type: string
+                    display_name:
+                      type: string
+                    link:
+                      type: string
+              tv_everywhere_android_sources:
+                type: array
+                items:
+                  title: source
+                  type: object
+                  properties:
+                    source:
+                      type: string
+                    display_name:
+                      type: string
+                    link:
+                      type: string
+              subscription_web_sources:
+                type: array
+                items:
+                  title: source
+                  type: object
+                  properties:
+                    source:
+                      type: string
+                    display_name:
+                      type: string
+                    link:
+                      type: string
+              subscription_ios_sources:
+                type: array
+                items:
+                  title: source
+                  type: object
+                  properties:
+                    source:
+                      type: string
+                    display_name:
+                      type: string
+                    link:
+                      type: string
+              subscription_android_sources:
+                type: array
+                items:
+                  title: source
+                  type: object
+                  properties:
+                    source:
+                      type: string
+                    display_name:
+                      type: string
+                    link:
+                      type: string
+              purchase_web_sources:
+                type: array
+                items:
+                  title: source
+                  type: object
+                  properties:
+                    source:
+                      type: string
+                    display_name:
+                      type: string
+                    link:
+                      type: string
+                    formats:
+                      type: array
+                      items:
+                        name: format
+                        type: object
+                        properties:
+                          price:
+                            type: string
+                          format:
+                            type: string
+                          type:
+                            type: string
+                          pre_order:
+                            type: boolean
+
+              purchase_ios_sources:
+                type: array
+                items:
+                  title: source
+                  type: object
+                  properties:
+                    source:
+                      type: string
+                    display_name:
+                      type: string
+                    link:
+                      type: string
+                    formats:
+                      type: array
+                      items:
+                        name: format
+                        type: object
+                        properties:
+                          price:
+                            type: string
+                          format:
+                            type: string
+                          type:
+                            type: string
+                          pre_order:
+                            type: boolean
+              purchase_android_sources:
+                type: array
+                items:
+                  title: source
+                  type: object
+                  properties:
+                    source:
+                      type: string
+                    display_name:
+                      type: string
+                    link:
+                      type: string
+                    formats:
+                      type: array
+                      items:
+                        name: format
+                        type: object
+                        properties:
+                          price:
+                            type: string
+                          format:
+                            type: string
+                          type:
+                            type: string
+                          pre_order:
+                            type: boolean
+              other_sources:
+                type: array
+                items:
+                  name: source
+                  type: object
+                  properties:
+                    source:
+                      type: string
+                    display_name:
+                      type: string
+                    link:
+                      type: string
+                    formats:
+                      type: array
+                      items:
+                        name: format
+                        type: object
+                        properties:
+                          price:
+                            type: string
+                          format:
+                            type: string
+                          type:
+                            type: string
+                          pre_order:
+                            type: boolean
+
+  /users/{user_id}/movie/{id}/delete:
+    # This is a HTTP operation
+    put:
+      # Describe this verb here. Note: you can use markdown
+      tags: [Users]
+      description: |
+        Deletes a `movie` from the user's collection.
+        Query param of **user_id** determines the
+        user to delete the movie from.
+      parameters:
+        # An example parameter that is in query and is required
+        -
+          name: user_id
+          in: path
+          description: ID of User
+          required: true
+          type: string
+        -
+          name: id
+          in: path
+          description: ID of Movie
+          required: true
+          type: string
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            title: MovieObject
+            type: object
+            properties:
+              Username:
+                type: string
+              Email:
+                type: string
+              Movies:
+                type: array
+                items:
+                  title: movie
+                  type: object
+        400:
+          description: Error response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            title: Error Object
+            type: object
+            properties:
+              status:
+                type: string
+              data:
+                type: string
+  /movies/{upc}:
+    get:
+      tags: [Movies]
+      description: |
+        Gets a title of a `movie` based on query param **upc**
+         then queries OMDB API for `movie` information.
+      parameters:
+        # An example parameter that is in query and is required
+        -
+          name: upc
+          in: path
+          description: UPC for movie
+          required: true
+          type: string
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            title: MovieObject
+            type: object
+            properties:
+              Title:
+                type: string
+              Year:
+                type: string
+              Rated:
+                type: string
+              Released:
+                type: string
+              Runtime:
+                type: string
+              Genre:
+                type: string
+              Director:
+                type: string
+              Writer:
+                type: string
+              Actors:
+                type: string
+              Plot:
+                type: string
+              Language:
+                type: string
+              Country:
+                type: string
+              Awards:
+                type: string
+              Poster:
+                type: string
+              Metascore:
+                type: string
+              imdbRating:
+                type: string
+              imdbVotes:
+                type: string
+              imdbID:
+                type: string
+              Type:
+                type: string
+              Response:
+                type: string
+        400:
+          description: Error response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            title: Error Object
+            type: object
+            properties:
+              status:
+                type: string
+              data:
+                type: string
+  /movies/find/{title}:
+    get:
+      tags: [Movies]
+      description: |
+        Gets a `movie` based on query param **title**
+         then queries OMDB API for `movie` information.
+      parameters:
+        # An example parameter that is in query and is required
+        -
+          name: title
+          in: path
+          description: Title of the movie
+          required: true
+          type: string
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            title: MovieObject
+            type: object
+            properties:
+              Title:
+                type: string
+              Year:
+                type: string
+              Rated:
+                type: string
+              Released:
+                type: string
+              Runtime:
+                type: string
+              Genre:
+                type: string
+              Director:
+                type: string
+              Writer:
+                type: string
+              Actors:
+                type: string
+              Plot:
+                type: string
+              Language:
+                type: string
+              Country:
+                type: string
+              Awards:
+                type: string
+              Poster:
+                type: string
+              Metascore:
+                type: string
+              imdbRating:
+                type: string
+              imdbVotes:
+                type: string
+              imdbID:
+                type: string
+              Type:
+                type: string
+              Response:
+                type: string
