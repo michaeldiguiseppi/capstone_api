@@ -1,6 +1,7 @@
 {
-  "name": "_example",
-  "version": "0.0.0",
+  "name": "MMDB Movie Database",
+  "version": "1.0.0",
+  "description": "Mike's Movie Database, an application for cataloguing your movie collection.",
   "private": true,
   "scripts": {
     "start": "node ./src/server/bin/www"
