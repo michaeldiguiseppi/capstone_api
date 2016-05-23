@@ -6,11 +6,11 @@ var server = require('../../src/server/app');
 var should = chai.should();
 var testUtilities = require('../utilities');
 var testSeed = require('../../src/server/models/seeds/test-seed');
-var Students = require('../../src/server/models/students');
+var Users = require('../../src/server/models/users');
 
 chai.use(chaiHttp);
 
-/*
+
 describe('student routes', function() {
 
   beforeEach(function(done) {
@@ -22,26 +22,27 @@ describe('student routes', function() {
     testUtilities.dropDatabase(done);
   });
 
-  describe('/GET students', function() {
-    it('should return all students', function(done) {
+  describe('/GET movies', function() {
+    it('should return all movies for a user', function(done) {
+      User.findOne().then(function(user) {
+        console.log(user);
         chai.request(server)
-          .get('/students')
+          .get('/users/'+user._id+'/movies')
           .end(function(err, res) {
             res.status.should.equal(200);
-            res.type.should.equal('application/json');
-            res.body.data.should.be.a('array');
-            res.body.should.be.a('object');
-            res.body.should.have.property('status');
-            res.body.status.should.equal('success');
-            res.body.should.have.property('data');
-            res.body.data.length.should.equal(1);
-            res.body.data[0].firstName.should.equal('Kevin');
-            res.body.data[0].lastName.should.equal('Schwartz');
-            res.body.data[0].year.should.equal(2001);
+            // res.type.should.equal('application/json');
+            // res.body.data.should.be.a('array');
+            // res.body.should.be.a('object');
+            // res.body.should.have.property('status');
+            // res.body.status.should.equal('success');
+            // res.body.should.have.property('data');
             return done();
         });
+      });
     });
   });
+});
+/*
   describe('/GET one student', function() {
     it('should return one student', function(done) {
       Students.findOne()
