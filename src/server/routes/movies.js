@@ -7,13 +7,10 @@ mongoose.Promise = require('bluebird');
 var request = require('request');
 if (process.env.NODE_ENV !== 'production') { var config = require('../../_config'); }
 
-
 router.get('/:upc', getTitle);
 router.get('/find/:title', getMovie);
 
-
 ////////////////////////////////////////
-
 
 function getTitle(req, res, next) {
   var upc = req.params.upc;
