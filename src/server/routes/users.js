@@ -74,7 +74,6 @@ function getStreamingSources(req, res, next) {
 
 function deleteMovie(req, res, next) {
   var query = { _id: req.params.user_id };
-  var options = { new: true };
 
   User.findOneAndUpdate(query, { $pull: { movies: { imdbID: req.params.id }}}, {new: true})
   .then(function(data) {
