@@ -1,29 +1,37 @@
-# Example YAML to get you started quickly.
-# Be aware that YAML has indentation based scoping.
-# Code completion support is available so start typing for available options.
 swagger: '2.0'
-
-# This is your document metadata
 info:
-  version: "1.0.0"
+  version: 1.0.0
   title: MMDB Movie API
-# Describe your paths here
+basePath: /
+schemes:
+  - http
+  - https
 paths:
   /auth/register:
-    # This is a HTTP operation
     post:
-      # Describe this verb here. Note: you can use markdown
-      tags: [Auth]
+      tags:
+        - Auth
       description: |
         Registers a new `user`.
-      # This is array of GET operation parameters:
-      # Expected responses for this operation:
+      parameters:
+        - name: username
+          in: formData
+          description: Username of new user
+          required: true
+          type: string
+        - name: email
+          in: formData
+          description: Email address of the new user
+          required: true
+          type: string
+        - name: password
+          in: formData
+          description: Password of the new user
+          required: true
+          type: string
       responses:
-        # Response code
-        200:
+        '200':
           description: Successful response
-          # A schema describing your response object.
-          # Use JSON Schema format
           schema:
             title: UserObject
             type: object
@@ -49,10 +57,8 @@ paths:
                         items:
                           title: movie
                           type: object
-        400:
+        '400':
           description: Error response
-          # A schema describing your response object.
-          # Use JSON Schema format
           schema:
             title: UserObject
             type: object
@@ -85,20 +91,25 @@ paths:
                       _id:
                         type: string
   /auth/login:
-    # This is a HTTP operation
     post:
-      # Describe this verb here. Note: you can use markdown
-      tags: [Auth]
+      tags:
+        - Auth
       description: |
         Logs in a `user`.
-      # This is array of GET operation parameters:
-      # Expected responses for this operation:
+      parameters:
+        - name: email
+          in: formData
+          description: Email address of the user
+          required: true
+          type: string
+        - name: password
+          in: formData
+          description: Password of the user
+          required: true
+          type: string
       responses:
-        # Response code
-        200:
+        '200':
           description: Successful response
-          # A schema describing your response object.
-          # Use JSON Schema format
           schema:
             title: UserObject
             type: object
@@ -124,10 +135,8 @@ paths:
                           type: object
                       _id:
                         type: string
-        400:
+        '400':
           description: Error response
-          # A schema describing your response object.
-          # Use JSON Schema format
           schema:
             title: UserObject
             type: object
@@ -143,31 +152,23 @@ paths:
                     type: string
                   password:
                     type: string
-  /users/{user_id}/movies:
-    # This is a HTTP operation
+  '/users/{user_id}/movies':
     get:
-      # Describe this verb here. Note: you can use markdown
-      tags: [Users]
+      tags:
+        - Users
       description: |
         Gets `Movies` object.
         Query param of **user_id** determines the
         user to return movies for.
-      # This is array of GET operation parameters:
       parameters:
-        # An example parameter that is in query and is required
-        -
-          name: user_id
+        - name: user_id
           in: path
           description: ID of User
           required: true
           type: string
-      # Expected responses for this operation:
       responses:
-        # Response code
-        200:
+        '200':
           description: Successful response
-          # A schema describing your response object.
-          # Use JSON Schema format
           schema:
             title: ArrayOfMovies
             type: array
@@ -215,10 +216,8 @@ paths:
                   type: string
                 Response:
                   type: string
-        400:
+        '400':
           description: Error response
-          # A schema describing your response object.
-          # Use JSON Schema format
           schema:
             title: Error Object
             type: object
@@ -227,31 +226,30 @@ paths:
                 type: string
               data:
                 type: string
-  /users/{user_id}/movie/add:
-    # This is a HTTP operation
+  '/users/{user_id}/movie/add':
     post:
-      # Describe this verb here. Note: you can use markdown
-      tags: [Users]
+      tags:
+        - Users
       description: |
         Inserts a `movie` object.
         Query param of **user_id** determines the
         user to insert the movie for.
-      # This is array of GET operation parameters:
       parameters:
-        # An example parameter that is in query and is required
-        -
-          name: user_id
+        - name: user_id
           in: path
           description: ID of User
           required: true
           type: string
-      # Expected responses for this operation:
+        - name: movieObject
+          in: body
+          description: >-
+            The movie object to insert. It must be in the same format as the
+            response.
+          required: true
+          type: string
       responses:
-        # Response code
-        200:
+        '200':
           description: Successful response
-          # A schema describing your response object.
-          # Use JSON Schema format
           schema:
             title: UserObject
             type: object
@@ -265,10 +263,8 @@ paths:
                 items:
                   title: Movie
                   type: object
-        400:
+        '400':
           description: Error response
-          # A schema describing your response object.
-          # Use JSON Schema format
           schema:
             title: Error Object
             type: object
@@ -277,43 +273,33 @@ paths:
                 type: string
               data:
                 type: string
-  /users/{user_id}/streaming/{id}/{type}:
-    # This is a HTTP operation
+  '/users/{user_id}/streaming/{id}/{type}':
     get:
-      # Describe this verb here. Note: you can use markdown
-      tags: [Users]
+      tags:
+        - Users
       description: |
         Finds streaming sources for a `movie`.
         Query param of **user_id** determines the
         user querying for streaming sources.
-      # This is array of GET operation parameters:
       parameters:
-        # An example parameter that is in query and is required
-        -
-          name: user_id
+        - name: user_id
           in: path
           description: ID of User
           required: true
           type: string
-        -
-          name: id
+        - name: id
           in: path
           description: ID of movie to search
           required: true
           type: string
-        -
-          name: type
+        - name: type
           in: path
           description: Type of media searching for (movie or series)
           required: true
           type: string
-      # Expected responses for this operation:
       responses:
-        # Response code
-        200:
+        '200':
           description: Successful response
-          # A schema describing your response object.
-          # Use JSON Schema format
           schema:
             title: StreamingObject
             type: object
@@ -573,7 +559,6 @@ paths:
                             type: string
                           pre_order:
                             type: boolean
-
               purchase_ios_sources:
                 type: array
                 items:
@@ -652,37 +637,28 @@ paths:
                             type: string
                           pre_order:
                             type: boolean
-
-  /users/{user_id}/movie/{id}/delete:
-    # This is a HTTP operation
+  '/users/{user_id}/movie/{id}/delete':
     put:
-      # Describe this verb here. Note: you can use markdown
-      tags: [Users]
+      tags:
+        - Users
       description: |
         Deletes a `movie` from the user's collection.
         Query param of **user_id** determines the
         user to delete the movie from.
       parameters:
-        # An example parameter that is in query and is required
-        -
-          name: user_id
+        - name: user_id
           in: path
           description: ID of User
           required: true
           type: string
-        -
-          name: id
+        - name: id
           in: path
           description: ID of Movie
           required: true
           type: string
-      # Expected responses for this operation:
       responses:
-        # Response code
-        200:
+        '200':
           description: Successful response
-          # A schema describing your response object.
-          # Use JSON Schema format
           schema:
             title: MovieObject
             type: object
@@ -696,10 +672,8 @@ paths:
                 items:
                   title: movie
                   type: object
-        400:
+        '400':
           description: Error response
-          # A schema describing your response object.
-          # Use JSON Schema format
           schema:
             title: Error Object
             type: object
@@ -708,27 +682,22 @@ paths:
                 type: string
               data:
                 type: string
-  /movies/{upc}:
+  '/movies/{upc}':
     get:
-      tags: [Movies]
+      tags:
+        - Movies
       description: |
         Gets a title of a `movie` based on query param **upc**
          then queries OMDB API for `movie` information.
       parameters:
-        # An example parameter that is in query and is required
-        -
-          name: upc
+        - name: upc
           in: path
           description: UPC for movie
           required: true
           type: string
-      # Expected responses for this operation:
       responses:
-        # Response code
-        200:
+        '200':
           description: Successful response
-          # A schema describing your response object.
-          # Use JSON Schema format
           schema:
             title: MovieObject
             type: object
@@ -773,10 +742,8 @@ paths:
                 type: string
               Response:
                 type: string
-        400:
+        '400':
           description: Error response
-          # A schema describing your response object.
-          # Use JSON Schema format
           schema:
             title: Error Object
             type: object
@@ -785,27 +752,22 @@ paths:
                 type: string
               data:
                 type: string
-  /movies/find/{title}:
+  '/movies/find/{title}':
     get:
-      tags: [Movies]
+      tags:
+        - Movies
       description: |
         Gets a `movie` based on query param **title**
          then queries OMDB API for `movie` information.
       parameters:
-        # An example parameter that is in query and is required
-        -
-          name: title
+        - name: title
           in: path
           description: Title of the movie
           required: true
           type: string
-      # Expected responses for this operation:
       responses:
-        # Response code
-        200:
+        '200':
           description: Successful response
-          # A schema describing your response object.
-          # Use JSON Schema format
           schema:
             title: MovieObject
             type: object
