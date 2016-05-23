@@ -4,7 +4,12 @@ var User = require('../models/users');
 var moment = require('moment');
 var jwt = require('jwt-simple');
 
-router.post('/register', function(req, res, next) {
+router.post('/register', registerUser);
+router.post('/login', loginUser);
+
+////////////////////////////////////////////
+
+function registerUser (req, res, next) {
   // ensure user does not already exist
   User.create(req.body)
     .then(function (member) {
@@ -26,9 +31,9 @@ router.post('/register', function(req, res, next) {
         message: err
       });
     });
-});
+}
 
-router.post('/login', function (req, res, next) {
+ function loginUser (req, res, next) {
   // ensure that user exists
   User.findOne({email: req.body.email})
   .then(function (user) {
@@ -72,7 +77,7 @@ router.post('/login', function (req, res, next) {
   .catch(function (err) {
     return next(err);
   });
-});
+}
 
 // ** helpers ** //
 
