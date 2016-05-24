@@ -17,7 +17,7 @@ var movieRoutes = require('./routes/movies.js');
 var userRoutes = require('./routes/users.js');
 
 var environment = process.env.NODE_ENV || 'development';
-if (!process.env.NODE_ENV) {
+if (environment === 'development' || environment === 'test') {
   var mongoURI = config.mongoURI[environment];
 } else {
   var mongoURI = process.env.MONGODB_URI;
