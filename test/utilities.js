@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
-var Users = require('../src/server/models/Users');
+var Users = require('../src/server/models/users');
+
 function dropDatabase(done) {
   mongoose.connection.db.dropDatabase();
   if (done) {

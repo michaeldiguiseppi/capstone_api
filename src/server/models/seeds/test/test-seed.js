@@ -1,4 +1,4 @@
-var db = require('../../models/users');
+var db = require('../../../models/users');
 var seedUser = require('../users');
 
 module.exports.test = function (done) {

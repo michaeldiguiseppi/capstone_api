@@ -5,133 +5,133 @@ var chaiHttp = require('chai-http');
 var server = require('../../src/server/app');
 var should = chai.should();
 var testUtilities = require('../utilities');
-var testSeed = require('../../src/server/models/seeds/test-seed');
+var testSeed = require('../../src/server/models/seeds/test/test-seed');
 var Users = require('../../src/server/models/users');
 
 chai.use(chaiHttp);
 
 
-describe('student routes', function() {
+describe('user routes', function() {
 
   beforeEach(function(done) {
     testUtilities.dropDatabase();
-    testSeed.runSeed(done);
+    testSeed.test(done);
   });
 
   afterEach(function(done) {
     testUtilities.dropDatabase(done);
   });
 
-  describe('/GET movies', function() {
+  describe('/GET users/:user_id/movies', function() {
     it('should return all movies for a user', function(done) {
-      User.findOne().then(function(user) {
-        console.log(user);
+      Users.findOne().then(function(user) {
         chai.request(server)
           .get('/users/'+user._id+'/movies')
           .end(function(err, res) {
             res.status.should.equal(200);
-            // res.type.should.equal('application/json');
-            // res.body.data.should.be.a('array');
-            // res.body.should.be.a('object');
-            // res.body.should.have.property('status');
-            // res.body.status.should.equal('success');
-            // res.body.should.have.property('data');
-            return done();
-        });
-      });
-    });
-  });
-});
-/*
-  describe('/GET one student', function() {
-    it('should return one student', function(done) {
-      Students.findOne()
-      .then(function(student){
-        console.log(student);
-        chai.request(server)
-          .get('/students/'+student.id)
-          .end(function(err, res) {
-            console.log('ENDING GET ONE');
-            console.log(res.body);
-            res.status.should.equal(200);
             res.type.should.equal('application/json');
-            res.body.should.be.a('object');
-            res.body.firstName.should.equal('Kevin');
-            res.body.lastName.should.equal('Schwartz');
-            res.body.year.should.equal(2001);
+            res.body.should.be.a('array');
+            res.body[0].should.be.a('object');
+            res.body[0].Title.should.equal('Titanic');
+            res.body[0].should.have.property('Rated');
+            res.body[0].Rated.should.equal('PG-13');
+            res.body[0].should.have.property('Runtime');
+            res.body[0].Runtime.should.equal('194 min');
             return done();
         });
-      }).catch(function(err) {
-        console.log('CATCH CLAUSE!', err);
-        done();
       });
     });
   });
-  describe('/POST students', function() {
-    it('should insert one student', function(done) {
+  describe('/POST users/:user_id/movie/add', function() {
+    it('should insert one movie', function(done) {
+      Users.findOne().then(function(user) {
         chai.request(server)
-          .post('/students')
+          .post('/users/'+user._id+'/movie/add')
           .send({
-            firstName: 'Michael',
-            lastName: 'DiGuiseppi',
-            year: '2003'
+            Title: "Scarface",
+            Year: "1983",
+            Rated: "R",
+            Released: "09 Dec 1983",
+            Runtime: "170 min",
+            Genre: "Crime, Drama",
+            Director: "Brian De Palma",
+            Writer: "Oliver Stone (screenplay)",
+            Actors: "Al Pacino, Steven Bauer, Michelle Pfeiffer, Mary Elizabeth Mastrantonio",
+            Plot: "In 1980 Miami, a determined Cuban immigrant takes over a drug cartel while succumbing to greed.",
+            Language: "English, Spanish",
+            Country: "USA",
+            Awards: "Nominated for 3 Golden Globes. Another 4 nominations.",
+            Poster: "http://ia.media-imdb.com/images/M/MV5BMjAzOTM4MzEwNl5BMl5BanBnXkFtZTgwMzU1OTc1MDE@._V1_SX300.jpg",
+            Metascore: "65",
+            imdbRating: "8.3",
+            imdbVotes: "525,616",
+            imdbID: "tt0086250",
+            Type: "movie",
+            Response: "True"
           })
           .end(function(err, res) {
             res.status.should.equal(200);
             res.body.should.be.a('object');
-            res.body.firstName.should.equal('Michael');
-            res.body.lastName.should.equal('DiGuiseppi');
-            res.body.year.should.equal(2003);
+            res.body.movies.should.be.a('array');
+            res.body.movies.length.should.equal(2);
+            res.body.movies[0].should.have.property('Title');
+            res.body.movies[0].Title.should.equal('Titanic');
+            res.body.movies[0].should.have.property('Runtime');
+            res.body.movies[0].Runtime.should.equal('194 min');
+            res.body.movies[1].should.have.property('Title');
+            res.body.movies[1].Title.should.equal('Scarface');
+            res.body.movies[1].should.have.property('Runtime');
+            res.body.movies[1].Runtime.should.equal('170 min');
             return done();
         });
+      });
     });
   });
-  describe('/PUT students/:id', function() {
-    it('should return a single student', function(done) {
-      Students.findOne().then(function(student) {
-        var studentID = student._id;
-        console.log(student.id, student._id);
+  describe('/GET users/:user_id/streaming/:id/:type', function() {
+    it('should return streaming sources for the specified movie', function(done) {
+      this.timeout(4000);
+      Users.findOne().then(function(user) {
+        var movies = user.movies[0];
         chai.request(server)
-        .put('/students/'+studentID)
-        .send({firstName: 'Tyler'})
+          .get('/users/'+user._id+'/streaming/'+movies.imdbID+'/'+movies.Type)
+          .end(function(err, res) {
+            res.status.should.equal(200);
+            res.type.should.equal('application/json');
+            res.body.should.be.a('object');
+            res.body.should.have.property('title');
+            res.body.title.should.equal('Titanic');
+            res.body.should.have.property('overview');
+            res.body.overview.should.be.a('string');
+            res.body.should.have.property('purchase_web_sources');
+            res.body.purchase_web_sources.should.be.a('array');
+            res.body.purchase_web_sources.length.should.not.equal(0);
+            res.body.purchase_web_sources[0].should.be.a('object');
+            res.body.purchase_web_sources[0].source.should.equal('itunes');
+            return done();
+        });
+      });
+    });
+  });
+  describe('/PUT users/:user_id/movie/:id/delete', function() {
+    it('should delete a single movie', function(done) {
+      Users.findOne().then(function(user) {
+        chai.request(server)
+        .put('/users/'+user._id+'/movie/'+user.movies[0].imdbID+'/delete')
         .end(function(err, res) {
-          console.log('ENDING UPDATE ONE');
           res.status.should.equal(200);
           res.type.should.equal('application/json');
           res.body.should.be.a('object');
           res.body.should.have.property('status');
-          res.body.should.have.property('data');
           res.body.status.should.equal('success');
+          res.body.should.have.property('data');
           res.body.data.should.be.a('object');
-          res.body.data.firstName.should.equal('Tyler');
-          res.body.data.lastName.should.equal('Schwartz');
-          res.body.data.year.should.equal(2001);
+          res.body.data.should.have.property('username');
+          res.body.data.should.have.property('email');
+          res.body.data.movies.should.be.a('array');
+          res.body.data.movies.length.should.equal(0);
           return done();
         });
       });
     });
   });
-  describe('/DELETE students', function() {
-    it('should delete one student', function(done) {
-      Students.findOne().then(function(student) {
-        chai.request(server)
-          .delete('/students/'+student._id)
-          .end(function(err, response) {
-            chai.request(server)
-              .get('/students')
-              .end(function(err, res) {
-                res.status.should.equal(200);
-                res.type.should.equal('application/json');
-                res.body.data.should.be.a('array');
-                res.body.should.be.a('object');
-                res.body.should.have.property('status');
-                res.body.status.should.equal('success');
-                res.body.should.have.property('data');
-                res.body.data.length.should.equal(0);
-                return done();
-            });
-        });
-      });
-    });
-  });
-}); */
+});
