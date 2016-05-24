@@ -1,8 +1,8 @@
 {
-  "name": "MMDB Movie Database",
+  "name": "mmdb-api",
   "version": "1.0.0",
   "description": "Mike's Movie Database, an application for cataloguing your movie collection.",
-  "private": true,
+  "private": false,
   "scripts": {
     "start": "node ./src/server/bin/www"
   },
