@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+  - "5"
+  - "4.1"
+  - "4.0"
+  - "0.12"
+  - "0.11"
+services: mongodb
+before_script:
+- npm install -g mocha
+deploy:
+  provider: heroku
+  api_key:
+    secure: 
+  app: capstone_api
+  on:
+    repo: michaeldiguiseppi/capstone_api
+    branch: master
+    node: '5'
