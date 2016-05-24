@@ -1,6 +1,7 @@
 var faker = require('faker');
 var User = require('../../models/users');
 
+
 module.exports = seedData;
 
 function seedData (num) {
@@ -13,11 +14,7 @@ function seedData (num) {
     returner.push(0);
   }
 
-  if (returner.length === toGenerate) {
-    return User.collection.insert(users).then(function(data) {
-      console.log('testing!');
-    });
-  }
+  return User.collection.insert(users);
 }
 
 function constructUser () {
