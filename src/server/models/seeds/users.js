@@ -13,8 +13,9 @@ function seedData (num) {
     users.push(constructUser());
     returner.push(0);
   }
-
-  return User.collection.insert(users);
+  if (returner.length === toGenerate) {
+    return User.collection.insert(users);
+  }
 }
 
 function constructUser () {
