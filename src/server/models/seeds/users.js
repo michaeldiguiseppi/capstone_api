@@ -14,7 +14,9 @@ function seedData (num) {
   }
 
   if (returner.length === toGenerate) {
-    return User.collection.insert(users);
+    return User.collection.insert(users).then(function(data) {
+      console.log('testing!');
+    });
   }
 }
 
