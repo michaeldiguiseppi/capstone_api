@@ -90,7 +90,7 @@ function getMovie(req, res, next) {
 function getStreamingSources(req, res, next) {
   var type = req.params.type;
   var id = req.params.id;
-  var baseUrl = 'https://api-public.guidebox.com/v1.43/US/' + config.GUIDEBOX_KEY;
+  var baseUrl = 'https://api-public.guidebox.com/v1.43/US/' + process.env.GUIDEBOX_KEY;
   var options;
   var second_url;
   if (type === 'movie') {
