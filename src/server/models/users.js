@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcryptjs');
-var config = require('../../_config');
+if (process.env.NODE_ENV === 'development') { var config = require('../../_config'); }
 
 var UserSchema = new Schema({
   username: {
@@ -33,7 +33,7 @@ UserSchema.pre('save', function (next) {
   }
 
   // hash and salt the password
-  bcrypt.hash(user.password, config.SALT_WORK_FACTOR, function (err, hash) {
+  bcrypt.hash(user.password, (config.SALT_WORK_FACTOR || 10), function (err, hash) {
     if (err) return next(err);
 
     // override the plaintext password with new hashed/salted password
