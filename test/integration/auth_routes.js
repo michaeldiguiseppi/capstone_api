@@ -26,117 +26,142 @@ describe('auth routes', function() {
 
   describe('/POST auth/register', function() {
     it('should register a user', function(done) {
-        chai.request(server)
-          .post('/auth/register')
-          .send({
-            username: "MikeDee2",
-            email: "mike2@gmail.com",
-            password: "password",
-          })
-          .end(function(err, res) {
-            res.status.should.equal(201);
-            res.type.should.equal('application/json');
-            res.body.should.be.a('object');
-            res.body.should.have.property('status');
-            res.body.status.should.equal('success');
-            res.body.should.have.property('message');
-            res.body.message.should.be.a('object');
-            res.body.message.should.have.property('token');
-            res.body.message.should.have.property('data');
-            res.body.message.data.should.be.a('object');
-            res.body.message.data.should.have.property('username');
-            res.body.message.data.username.should.equal('MikeDee2');
-            res.body.message.data.email.should.equal('mike2@gmail.com');
-            return done();
+      chai.request(server)
+        .post('/auth/register')
+        .send({
+          username: "MikeDee2",
+          email: "mike2@gmail.com",
+          password: "password",
+        })
+        .end(function(err, res) {
+          res.status.should.equal(201);
+          res.type.should.equal('application/json');
+          res.body.should.be.a('object');
+          res.body.should.have.property('status');
+          res.body.status.should.equal('success');
+          res.body.should.have.property('message');
+          res.body.message.should.be.a('object');
+          res.body.message.should.have.property('token');
+          res.body.message.should.have.property('data');
+          res.body.message.data.should.be.a('object');
+          res.body.message.data.should.have.property('username');
+          res.body.message.data.username.should.equal('MikeDee2');
+          res.body.message.data.email.should.equal('mike2@gmail.com');
+          return done();
         });
     });
     it('should not register a duplicate user', function(done) {
-      // chai.request(server)
-      //   .post('/auth/register')
-      //   .send({
-      //     username: "MikeDeeGee",
-      //     email: "mike@gmail.com",
-      //     password: "password",
-      //   })
-      //   .end(function(err, res) {
-      //     res.status.should.equal(201);
-      //     res.type.should.equal('application/json');
-      //     res.body.should.be.a('object');
-      //     res.body.should.have.property('status');
-      //     res.body.status.should.equal('success');
-      //     res.body.should.have.property('message');
-      //     res.body.message.should.be.a('object');
-      //     res.body.message.should.have.property('token');
-      //     res.body.message.should.have.property('data');
-      //     res.body.message.data.should.be.a('object');
-      //     res.body.message.data.should.have.property('username');
-      //     res.body.message.data.username.should.equal('MikeDeeGee');
-      //     res.body.message.data.email.should.equal('mike@gmail.com');
-          chai.request(server)
-            .post('/auth/register')
-            .send({
-              "username": "MikeDeeGee",
-              "email": "mike@gmail.com",
-              "password": "password",
-            })
-            .end(function(err, res) {
-              res.status.should.equal(409);
-              res.type.should.equal('application/json');
-              res.body.should.be.a('object');
-              res.body.should.have.property('status');
-              res.body.status.should.equal('danger');
-              res.body.should.have.property('message');
-              res.body.message.should.be.a('string');
-              return done();
-          });
-        });
-      // });
+      chai.request(server)
+        .post('/auth/register')
+        .send({
+          username: "MikeDeeGee",
+          email: "mike@gmail.com",
+          password: "password",
+        })
+        .end(function(err, res) {
+          res.status.should.equal(409);
+          res.type.should.equal('application/json');
+          res.body.should.be.a('object');
+          res.body.should.have.property('status');
+          res.body.status.should.equal('danger');
+          res.body.should.have.property('message');
+          res.body.message.should.be.a('string');
+          return done();
+      });
     });
-  // describe('/POST users/:user_id/movie/add', function() {
-  //   it('should insert one movie', function(done) {
-  //     Users.findOne().then(function(user) {
-  //       chai.request(server)
-  //         .post('/users/'+user._id+'/movie/add')
-  //         .send({
-  //           Title: "Scarface",
-  //           Year: "1983",
-  //           Rated: "R",
-  //           Released: "09 Dec 1983",
-  //           Runtime: "170 min",
-  //           Genre: "Crime, Drama",
-  //           Director: "Brian De Palma",
-  //           Writer: "Oliver Stone (screenplay)",
-  //           Actors: "Al Pacino, Steven Bauer, Michelle Pfeiffer, Mary Elizabeth Mastrantonio",
-  //           Plot: "In 1980 Miami, a determined Cuban immigrant takes over a drug cartel while succumbing to greed.",
-  //           Language: "English, Spanish",
-  //           Country: "USA",
-  //           Awards: "Nominated for 3 Golden Globes. Another 4 nominations.",
-  //           Poster: "http://ia.media-imdb.com/images/M/MV5BMjAzOTM4MzEwNl5BMl5BanBnXkFtZTgwMzU1OTc1MDE@._V1_SX300.jpg",
-  //           Metascore: "65",
-  //           imdbRating: "8.3",
-  //           imdbVotes: "525,616",
-  //           imdbID: "tt0086250",
-  //           Type: "movie",
-  //           Response: "True"
-  //         })
-  //         .end(function(err, res) {
-  //           res.status.should.equal(200);
-  //           res.body.should.be.a('object');
-  //           res.body.movies.should.be.a('array');
-  //           res.body.movies.length.should.equal(2);
-  //           res.body.movies[0].should.have.property('Title');
-  //           res.body.movies[0].Title.should.equal('Titanic');
-  //           res.body.movies[0].should.have.property('Runtime');
-  //           res.body.movies[0].Runtime.should.equal('194 min');
-  //           res.body.movies[1].should.have.property('Title');
-  //           res.body.movies[1].Title.should.equal('Scarface');
-  //           res.body.movies[1].should.have.property('Runtime');
-  //           res.body.movies[1].Runtime.should.equal('170 min');
-  //           return done();
-  //       });
-  //     });
-  //   });
-  // });
+    });
+  describe('/POST auth/login', function() {
+    it('should log in a user', function(done) {
+      chai.request(server)
+        .post('/auth/login')
+        .send({
+          email: 'mike@gmail.com',
+          password: 'password',
+        })
+        .end(function(err, res) {
+          res.status.should.equal(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('status');
+          res.body.status.should.equal('success');
+          res.body.should.have.property('message');
+          res.body.message.should.be.a('object');
+          res.body.message.should.have.property('token');
+          res.body.message.should.have.property('user');
+          res.body.message.user.should.be.a('object');
+          res.body.message.user.should.have.property('username');
+          res.body.message.user.username.should.equal('MikeDeeGee');
+          res.body.message.user.should.have.property('email');
+          res.body.message.user.email.should.equal('mike@gmail.com');
+          return done();
+      });
+    });
+    it('should not log in a user if the password is missing', function(done) {
+      chai.request(server)
+        .post('/auth/login')
+        .send({
+          email: 'mike@gmail.com',
+        })
+        .end(function(err, res) {
+          res.status.should.equal(401);
+          res.body.should.be.a('object');
+          res.body.should.have.property('status');
+          res.body.status.should.equal('danger');
+          res.body.should.have.property('message');
+          res.body.message.should.equal('Missing password.');
+          res.body.should.have.property('requestBody');
+          res.body.requestBody.should.be.a('object');
+          res.body.requestBody.should.have.property('email');
+          res.body.requestBody.email.should.equal('mike@gmail.com');
+          return done();
+      });
+    });
+    it('should not log in a user if the password is wrong', function(done) {
+      chai.request(server)
+        .post('/auth/login')
+        .send({
+          email: 'mike@gmail.com',
+          password: 'password23',
+        })
+        .end(function(err, res) {
+          res.status.should.equal(401);
+          res.body.should.be.a('object');
+          res.body.should.have.property('status');
+          res.body.status.should.equal('danger');
+          res.body.should.have.property('message');
+          res.body.message.should.equal('Password is not correct');
+          res.body.should.have.property('requestBody');
+          res.body.requestBody.should.be.a('object');
+          res.body.requestBody.should.have.property('email');
+          res.body.requestBody.email.should.equal('mike@gmail.com');
+          res.body.requestBody.should.have.property('password');
+          res.body.requestBody.password.should.equal('password23');
+          return done();
+      });
+    });
+    it('should not log in a user if the email does not exist', function(done) {
+      chai.request(server)
+        .post('/auth/login')
+        .send({
+          email: 'mike27@gmail.com',
+          password: 'password',
+        })
+        .end(function(err, res) {
+          res.status.should.equal(401);
+          res.body.should.be.a('object');
+          res.body.should.have.property('status');
+          res.body.status.should.equal('danger');
+          res.body.should.have.property('message');
+          res.body.message.should.equal('User does not exist');
+          res.body.should.have.property('requestBody');
+          res.body.requestBody.should.be.a('object');
+          res.body.requestBody.should.have.property('email');
+          res.body.requestBody.email.should.equal('mike27@gmail.com');
+          res.body.requestBody.should.have.property('password');
+          res.body.requestBody.password.should.equal('password');
+          return done();
+      });
+    });
+  });
   // describe('/GET users/:user_id/streaming/:id/:type', function() {
   //   it('should return streaming sources for the specified movie', function(done) {
   //     this.timeout(4000);

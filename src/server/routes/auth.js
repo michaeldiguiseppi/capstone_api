@@ -49,14 +49,14 @@ function registerUser (req, res, next) {
   .then(function (user) {
     if (!user) {
       return res.status(401).json({
-        status: 'fail',
+        status: 'danger',
         message: 'User does not exist',
         requestBody: req.body
       });
     } else
       if ( !req.body.password ) {
-        return res.status(401),json({
-          status: 'fail',
+        return res.status(401).json({
+          status: 'danger',
           message: 'Missing password.',
           requestBody: req.body
         });
@@ -67,7 +67,7 @@ function registerUser (req, res, next) {
         }
         if (!match) {
           return res.status(401).json({
-            status: 'fail',
+            status: 'danger',
             message: 'Password is not correct',
             requestBody: req.body
           });
@@ -77,7 +77,7 @@ function registerUser (req, res, next) {
       var token = generateToken(user);
       res.status(200).json({
         status: 'success',
-        data: {
+        message: {
           token: token,
           user: user
         }
