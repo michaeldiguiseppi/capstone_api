@@ -11,8 +11,10 @@ function seedData (num) {
     users.push(constructUser());
     console.log(i);
   }
-  console.log('here');
-  return User.collection.insert(users);
+  setTimeout(function() {
+    return User.collection.insert(users);
+  }, 5000);
+  
 }
 
 function constructUser () {

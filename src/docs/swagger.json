@@ -4,6 +4,7 @@
         "version": "1.0.0",
         "title": "MMDB Movie API"
     },
+    "host": "mmdb-api.herokuapp.com",
     "basePath": "/",
     "schemes": [
         "http",
