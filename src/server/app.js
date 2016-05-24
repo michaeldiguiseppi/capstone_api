@@ -6,10 +6,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-require('dotenv').config({silent: true});
-if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
-  var config = require('../_config');
+if (!process.env.NODE_ENV) {
+  require('dotenv').config({silent: true});
 }
+var config = require('../_config');
 
 // *** routes *** //
 var routes = require('./routes/index.js');
@@ -18,13 +18,7 @@ var authRoutes = require('./routes/auth.js');
 var movieRoutes = require('./routes/movies.js');
 var userRoutes = require('./routes/users.js');
 
-var environment = process.env.NODE_ENV || 'development';
-if (environment === 'development') {
-  var mongoURI = config.mongoURI[environment];
-} else {
-  var mongoURI = process.env.MONGODB_URI;
-}
-
+var mongoURI = config.mongoURI[process.env.NODE_ENV || 'development'];
 // *** express instance *** //
 var app = express();
 
