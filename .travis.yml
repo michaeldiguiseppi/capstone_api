@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+- '5'
+- '4.1'
+- '4.0'
+- '0.12'
+- '0.11'
+services: mongodb
+before_script:
+- npm install -g mocha
+deploy:
+  provider: heroku
+  api_key:
+    secure: iQBGhYaLbXTSuHXyZmYXs/Db/2IH5xWtEdpPDpXCpAkAp2z3lFmGre2Yw7qyFeYoidz9w1hI/SR4rplKLXg2SeU2cye+VzXiimr4zT8beEalYj4q2oR/QlCQR64Zj7yvV6YMkYr9Y8yll3tRK/5+lD8Qm4gNHQA+0oY/Tfen/HbkORjJC8Ia3bWSPFmsBh/VzquXg0ee1Jpo5zM9ZWq7dTQYSD4jAz8oK1hZnLco+GoeiZyGqiwYm1S29KCFc2lopfM/oj9ZfWNu2bl/uJPafF9p5lz5eGHfOH112WgAS/A4m5N9xZ/wRUeQqqhLAFEtuf3+eHvRQxQPIRgDFSMGbmpUo2WEVgjqkvwi/8OV0UdeSZGqvWdGLJSfBraJh8DAaNbYmgRkj3yRc9y6PbbfuTV2KHg5qozzJQ79b4yuWSotzbC3NSDROrLFbP00GER/2YcDSXxBo23/Gh/2qVp2EIYD0pV5/7RQYpp1y1/NoJxIA1FeqNwsv9nsn+UhmNuEzAHzFBw0r0dmVMvmK3Ku3Ystq4HVlytvVSZUaxgkHCjb35XhFVg00Uh/YahIA4rtj2+qDm04MtnyYguCY+JNT1K+gZAlbSlH/oRktJJzPWdiUZHOEJJ3dcU2lXYdhMurDIr5TGGZlwmqm2C4cMUczFd++L5LXhnYtRGWJDZ7lp4=
+  app: mmdb-api
+  on:
+    repo: michaeldiguiseppi/capstone_api
+    branch: master
+    node: '5'
