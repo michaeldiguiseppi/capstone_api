@@ -2,7 +2,7 @@ var db = require('../../../models/users');
 var seedUser = require('../users');
 
 module.exports.test = function (done) {
-  return seedUser(5)
+  seedUser()
   .then(function() {
     if(done) {
       return done();

@@ -33,7 +33,7 @@ UserSchema.pre('save', function (next) {
   }
 
   // hash and salt the password
-  bcrypt.hash(user.password, (config.SALT_WORK_FACTOR || 10), function (err, hash) {
+  bcrypt.hash(user.password, parseInt(process.env.SALT_WORK_FACTOR), function (err, hash) {
     if (err) return next(err);
 
     // override the plaintext password with new hashed/salted password
