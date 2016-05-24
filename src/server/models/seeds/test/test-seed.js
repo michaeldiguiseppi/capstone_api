@@ -5,7 +5,7 @@ module.exports.test = function (done) {
   return seedUser(5)
   .then(function() {
     if(done) {
-      done();
+      return done();
     }
   });
 };
