@@ -67,8 +67,26 @@ describe('auth routes', function() {
           res.body.should.have.property('message');
           res.body.message.should.be.a('string');
           return done();
+        });
       });
-    });
+      it('should not register a user if there is missing information', function(done) {
+        chai.request(server)
+          .post('/auth/register')
+          .send({
+            username: "MikeDee",
+            email: "mike2@gmail.com",
+          })
+          .end(function(err, res) {
+            res.status.should.equal(422);
+            res.type.should.equal('application/json');
+            res.body.should.be.a('object');
+            res.body.should.have.property('status');
+            res.body.status.should.equal('danger');
+            res.body.should.have.property('message');
+            res.body.message.should.be.a('object');
+            return done();
+          });
+        });
     });
   describe('/POST auth/login', function() {
     it('should log in a user', function(done) {
@@ -162,51 +180,4 @@ describe('auth routes', function() {
       });
     });
   });
-  // describe('/GET users/:user_id/streaming/:id/:type', function() {
-  //   it('should return streaming sources for the specified movie', function(done) {
-  //     this.timeout(4000);
-  //     Users.findOne().then(function(user) {
-  //       var movies = user.movies[0];
-  //       chai.request(server)
-  //         .get('/users/'+user._id+'/streaming/'+movies.imdbID+'/'+movies.Type)
-  //         .end(function(err, res) {
-  //           res.status.should.equal(200);
-  //           res.type.should.equal('application/json');
-  //           res.body.should.be.a('object');
-  //           res.body.should.have.property('title');
-  //           res.body.title.should.equal('Titanic');
-  //           res.body.should.have.property('overview');
-  //           res.body.overview.should.be.a('string');
-  //           res.body.should.have.property('purchase_web_sources');
-  //           res.body.purchase_web_sources.should.be.a('array');
-  //           res.body.purchase_web_sources.length.should.not.equal(0);
-  //           res.body.purchase_web_sources[0].should.be.a('object');
-  //           res.body.purchase_web_sources[0].source.should.equal('itunes');
-  //           return done();
-  //       });
-  //     });
-  //   });
-  // });
-  // describe('/PUT users/:user_id/movie/:id/delete', function() {
-  //   it('should delete a single movie', function(done) {
-  //     Users.findOne().then(function(user) {
-  //       chai.request(server)
-  //       .put('/users/'+user._id+'/movie/'+user.movies[0].imdbID+'/delete')
-  //       .end(function(err, res) {
-  //         res.status.should.equal(200);
-  //         res.type.should.equal('application/json');
-  //         res.body.should.be.a('object');
-  //         res.body.should.have.property('status');
-  //         res.body.status.should.equal('success');
-  //         res.body.should.have.property('data');
-  //         res.body.data.should.be.a('object');
-  //         res.body.data.should.have.property('username');
-  //         res.body.data.should.have.property('email');
-  //         res.body.data.movies.should.be.a('array');
-  //         res.body.data.movies.length.should.equal(0);
-  //         return done();
-  //       });
-  //     });
-  //   });
-  // });
 });
