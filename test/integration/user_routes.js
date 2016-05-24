@@ -5,7 +5,7 @@ var chaiHttp = require('chai-http');
 var server = require('../../src/server/app');
 var should = chai.should();
 var testUtilities = require('../utilities');
-var testSeed = require('../../src/server/models/seeds/test/test-seed');
+var testSeed = require('../../src/server/models/seeds/users');
 var Users = require('../../src/server/models/users');
 
 chai.use(chaiHttp);
@@ -15,7 +15,9 @@ describe('user routes', function() {
 
   beforeEach(function(done) {
     testUtilities.dropDatabase();
-    testSeed.test().then(done);
+    testSeed().then(function() {
+      done();
+    });
   });
 
   afterEach(function(done) {
