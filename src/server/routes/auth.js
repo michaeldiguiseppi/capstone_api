@@ -11,26 +11,36 @@ router.post('/login', loginUser);
 
 function registerUser (req, res, next) {
   // ensure user does not already exist
-  User.create(req.body)
-    .then(function (member) {
-      var token = generateToken(member);
-      return Promise.resolve({
-        token: token,
-        data: member
-      });
-    })
-    .then(function(data) {
-      res.status(201).json({
-        status: 'success',
-        message: data
-      });
-    })
-    .catch(function(err) {
-      res.status(422).json({
-        status: 'danger',
-        message: err
-      });
-    });
+  User.find({email: req.body.email}).then(function(data) {
+    if (data.length) {
+      res.status(409)
+        .json({
+          status: 'danger',
+          message: 'User already exists. Please log in or register a different user.'
+        });
+    } else {
+      User.create(req.body)
+        .then(function (member) {
+          var token = generateToken(member);
+          return Promise.resolve({
+            token: token,
+            data: member
+          });
+        })
+        .then(function(data) {
+          res.status(201).json({
+            status: 'success',
+            message: data
+          });
+        })
+        .catch(function(err) {
+          res.status(422).json({
+            status: 'danger',
+            message: err
+          });
+        });
+    }
+  });
 }
 
  function loginUser (req, res, next) {
@@ -40,7 +50,7 @@ function registerUser (req, res, next) {
     if (!user) {
       return res.status(401).json({
         status: 'fail',
-        message: 'Email does not exist',
+        message: 'User does not exist',
         requestBody: req.body
       });
     } else

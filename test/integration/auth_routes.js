@@ -51,27 +51,27 @@ describe('auth routes', function() {
         });
     });
     it('should not register a duplicate user', function(done) {
-      chai.request(server)
-        .post('/auth/register')
-        .send({
-          username: "MikeDeeGee",
-          email: "mike@gmail.com",
-          password: "password",
-        })
-        .end(function(err, res) {
-          res.status.should.equal(201);
-          res.type.should.equal('application/json');
-          res.body.should.be.a('object');
-          res.body.should.have.property('status');
-          res.body.status.should.equal('success');
-          res.body.should.have.property('message');
-          res.body.message.should.be.a('object');
-          res.body.message.should.have.property('token');
-          res.body.message.should.have.property('data');
-          res.body.message.data.should.be.a('object');
-          res.body.message.data.should.have.property('username');
-          res.body.message.data.username.should.equal('MikeDeeGee');
-          res.body.message.data.email.should.equal('mike@gmail.com');
+      // chai.request(server)
+      //   .post('/auth/register')
+      //   .send({
+      //     username: "MikeDeeGee",
+      //     email: "mike@gmail.com",
+      //     password: "password",
+      //   })
+      //   .end(function(err, res) {
+      //     res.status.should.equal(201);
+      //     res.type.should.equal('application/json');
+      //     res.body.should.be.a('object');
+      //     res.body.should.have.property('status');
+      //     res.body.status.should.equal('success');
+      //     res.body.should.have.property('message');
+      //     res.body.message.should.be.a('object');
+      //     res.body.message.should.have.property('token');
+      //     res.body.message.should.have.property('data');
+      //     res.body.message.data.should.be.a('object');
+      //     res.body.message.data.should.have.property('username');
+      //     res.body.message.data.username.should.equal('MikeDeeGee');
+      //     res.body.message.data.email.should.equal('mike@gmail.com');
           chai.request(server)
             .post('/auth/register')
             .send({
@@ -80,24 +80,17 @@ describe('auth routes', function() {
               "password": "password",
             })
             .end(function(err, res) {
-              res.status.should.equal(422);
+              res.status.should.equal(409);
               res.type.should.equal('application/json');
               res.body.should.be.a('object');
               res.body.should.have.property('status');
               res.body.status.should.equal('danger');
               res.body.should.have.property('message');
-              res.body.message.should.be.a('object');
-              res.body.message.should.have.property('code');
-              res.body.message.code.should.equal(11000);
-              res.body.message.should.have.property('op');
-              res.body.message.op.should.be.a('object');
-              res.body.message.op.should.have.property('username');
-              res.body.message.op.username.should.equal('MikeDeeGee');
-              res.body.message.op.email.should.equal('mike@gmail.com');
+              res.body.message.should.be.a('string');
               return done();
           });
         });
-      });
+      // });
     });
   // describe('/POST users/:user_id/movie/add', function() {
   //   it('should insert one movie', function(done) {
