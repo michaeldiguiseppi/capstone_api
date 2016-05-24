@@ -23,7 +23,7 @@ describe('user routes', function() {
   });
 
   describe('/GET users/:user_id/movies', function() {
-    xit('should return all movies for a user', function(done) {
+    it('should return all movies for a user', function(done) {
       Users.findOne().then(function(user) {
         chai.request(server)
           .get('/users/'+user._id+'/movies')

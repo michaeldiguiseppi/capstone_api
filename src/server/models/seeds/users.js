@@ -49,5 +49,7 @@ function constructUser () {
       Response: "True"
       });
 
+    console.log(person);
+
   return person;
 }
