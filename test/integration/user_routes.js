@@ -15,7 +15,7 @@ describe('user routes', function() {
 
   beforeEach(function(done) {
     testUtilities.dropDatabase();
-    testSeed.test(done);
+    testSeed.test().then(done);
   });
 
   afterEach(function(done) {

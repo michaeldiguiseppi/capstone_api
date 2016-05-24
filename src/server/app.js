@@ -6,7 +6,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-require('dotenv').config();
+require('dotenv').config({silent: true});
 if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
   var config = require('../_config');
 }
