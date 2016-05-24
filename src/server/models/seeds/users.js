@@ -6,15 +6,16 @@ module.exports = seedData;
 function seedData (num) {
   var users = [];
   var toGenerate = num || 10;
+  var returner = [];
 
   for ( var i = 0; i < toGenerate; i++ ) {
     users.push(constructUser());
-    console.log(i);
+    returner.push(0);
   }
-  setTimeout(function() {
+
+  if (returner.length === toGenerate) {
     return User.collection.insert(users);
-  }, 5000);
-  
+  }
 }
 
 function constructUser () {
@@ -51,8 +52,6 @@ function constructUser () {
       Type: "movie",
       Response: "True"
       });
-
-    console.log(person);
 
   return person;
 }
