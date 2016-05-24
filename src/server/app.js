@@ -7,7 +7,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 require('dotenv').config();
-if (process.env.NODE_ENV !== 'production') { var config = require('../_config'); }
+if (process.env.NODE_ENV === 'development') { var config = require('../_config'); }
 
 // *** routes *** //
 var routes = require('./routes/index.js');
