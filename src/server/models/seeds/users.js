@@ -9,8 +9,9 @@ function seedData (num) {
 
   for ( var i = 0; i < toGenerate; i++ ) {
     users.push(constructUser());
+    console.log(i);
   }
-
+  console.log('here');
   return User.collection.insert(users);
 }
 
