@@ -47,7 +47,7 @@ function registerUser (req, res, next) {
     res.status(400).json({
       status: 'danger',
       message: err,
-    })
+    });
   });
 }
 
