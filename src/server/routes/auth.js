@@ -24,7 +24,7 @@ function registerUser (req, res, next) {
           var token = generateToken(member);
           return Promise.resolve({
             token: token,
-            data: member
+            user: member
           });
         })
         .then(function(data) {

@@ -42,11 +42,11 @@ describe('auth routes', function() {
           res.body.should.have.property('message');
           res.body.message.should.be.a('object');
           res.body.message.should.have.property('token');
-          res.body.message.should.have.property('data');
-          res.body.message.data.should.be.a('object');
-          res.body.message.data.should.have.property('username');
-          res.body.message.data.username.should.equal('MikeDee2');
-          res.body.message.data.email.should.equal('mike2@gmail.com');
+          res.body.message.should.have.property('user');
+          res.body.message.user.should.be.a('object');
+          res.body.message.user.should.have.property('username');
+          res.body.message.user.username.should.equal('MikeDee2');
+          res.body.message.user.email.should.equal('mike2@gmail.com');
           return done();
         });
     });
