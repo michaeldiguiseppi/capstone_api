@@ -53,7 +53,7 @@ function registerUser (req, res, next) {
 
  function loginUser (req, res, next) {
   // ensure that user exists
-  User.findOne({email: req.body.email})
+  User.findOne({email: req.body.email.toLowerCase()})
   .then(function (user) {
     if (!user) {
       return res.status(401).json({
