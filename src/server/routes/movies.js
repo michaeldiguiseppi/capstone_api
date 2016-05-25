@@ -31,7 +31,7 @@ function getTitle(req, res, next) {
         res.status(200).json(JSON.parse(bod));
       });
     } else {
-      res.status(400).json({status: 'danger', data: 'Something went wrong. Please try again.'});
+      res.status(400).json({status: 'danger', message: 'Something went wrong. Please try again.'});
     }
   });
 }
@@ -44,7 +44,15 @@ function getMovie(req, res, next) {
   };
   request(options, function (err, resp, bod) {
     if (err) throw new Error(err);
-    res.status(200).json(JSON.parse(bod));
+    if (JSON.parse(bod).Title) {
+      res.status(200).json(JSON.parse(bod));
+    } else {
+      res.status(400).json({
+        status: 'danger',
+        message: 'Invalid title.  Please try again.'
+      });
+    }
+
   });
 }
 
