@@ -30,7 +30,10 @@ function registerUser (req, res, next) {
         .then(function(data) {
           res.status(201).json({
             status: 'success',
-            message: data
+            message: {
+              token: data.token,
+              user: data.user
+            }
           });
         })
         .catch(function(err) {
