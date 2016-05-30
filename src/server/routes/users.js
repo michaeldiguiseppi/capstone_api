@@ -277,14 +277,24 @@ function getStreamingSources(req, res, next) {
       url: baseUrl + '/search/id/imdb/' + id,
     };
     second_url = '/show/';
+    third_url = '/available_content';
   }
   request(options, function(error, response, body) {
     if (error) throw new Error(error);
     var guideboxId = JSON.parse(body).id;
-    var options = {
-      method: 'GET',
-      url: baseUrl + second_url + guideboxId,
-    };
+    var options;
+    if (type === 'movie') {
+      options = {
+        method: 'GET',
+        url: baseUrl + second_url + guideboxId,
+      };
+    } else {
+      options = {
+        method: 'GET',
+        url: baseUrl + second_url + guideboxId + third_url,
+      };
+    }
+
 
     request(options, function(err, resp, bod) {
       if (err) throw new Error(err);
