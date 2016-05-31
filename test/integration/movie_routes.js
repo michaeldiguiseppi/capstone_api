@@ -96,4 +96,37 @@ describe('movie routes', function() {
           });
       });
   });
+  describe('/get movies/movie/:id/related', function() {
+    it('should get related movies by id', function(done) {
+      chai.request(server)
+        .get('/movies/36647/related')
+        .end(function(err, res) {
+          res.status.should.equal(200);
+          res.type.should.equal('application/json');
+          res.body.should.be.a('object');
+          res.body.should.have.property('total_results');
+          res.body.total_results.should.equal(26);
+          res.body.should.have.property('results');
+          res.body.results.should.be.a('array');
+          res.body.results.length.should.equal(26);
+          res.body.results[0].should.be.a('object');
+          res.body.results[0].title.should.equal('Iron Man');
+          return done();
+        });
+      });
+      it('should not get a movie with an invalid id', function(done) {
+        chai.request(server)
+          .get('/movies/movie/11111111111111/related')
+          .end(function(err, res) {
+            res.status.should.equal(404);
+            res.type.should.equal('application/json');
+            res.body.should.be.a('object');
+            console.log(res.body);
+            res.body.should.have.property('message');
+            res.body.message.should.equal('Not Found');
+            res.body.should.have.property('error');
+            return done();
+          });
+      });
+  });
 });
