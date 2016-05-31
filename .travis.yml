@@ -8,6 +8,7 @@ node_js:
 services: mongodb
 before_script:
 - npm install -g mocha
+script: npm run coverage
 deploy:
   provider: heroku
   api_key:
