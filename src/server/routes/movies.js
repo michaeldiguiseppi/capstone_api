@@ -8,7 +8,7 @@ var request = require('request');
 
 router.get('/:upc', getTitle);
 router.get('/find/:title', getMovie);
-router.get('/:id/related', getRelated);
+router.get('/related/:id/:type', getRelated);
 
 ////////////////////////////////////////
 
@@ -59,14 +59,43 @@ function getMovie(req, res, next) {
 
 function getRelated(req, res, next) {
   var id = req.params.id;
+  var type = req.params.type;
   var baseUrl = 'https://api-public.guidebox.com/v1.43/US/' + process.env.GUIDEBOX_KEY;
-  var options = {
-    method: 'GET',
-    url: baseUrl + '/movie/' + id + '/related'
-  };
-  request(options, function(err, resp, body) {
-    if (err) throw new Error(err);
-    res.status(200).json(JSON.parse(body));
+  var options;
+  var second_url;
+  if (type === 'movie') {
+    options = {
+      method: 'GET',
+      url: baseUrl + '/search/movie/id/imdb/' + id,
+    };
+    second_url = '/movie/';
+  } else {
+    options = {
+      method: 'GET',
+      url: baseUrl + '/search/id/imdb/' + id,
+    };
+    second_url = '/show/';
+  }
+  request(options, function(error, response, body) {
+    if (error) throw new Error(error);
+    var guideboxId = JSON.parse(body).id;
+    var options = {
+      method: 'GET',
+      url: baseUrl + second_url + guideboxId + '/related',
+    };
+
+    request(options, function(err, resp, bod) {
+      if (err) throw new Error(err);
+      if (JSON.parse(bod).total_results) {
+        res.status(200).json(JSON.parse(bod));
+      } else {
+        res.status(400).json({
+          status: 'danger',
+          message: 'Invalid ID.  Please try again.',
+        });
+      }
+
+    });
   });
 }
 

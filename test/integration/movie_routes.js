@@ -96,10 +96,10 @@ describe('movie routes', function() {
           });
       });
   });
-  describe('/get movies/movie/:id/related', function() {
+  describe('/get movies/related/:id/:type', function() {
     it('should get related movies by id', function(done) {
       chai.request(server)
-        .get('/movies/36647/related')
+        .get('/movies/related/tt0120338/movie')
         .end(function(err, res) {
           res.status.should.equal(200);
           res.type.should.equal('application/json');
@@ -116,15 +116,15 @@ describe('movie routes', function() {
       });
       it('should not get a movie with an invalid id', function(done) {
         chai.request(server)
-          .get('/movies/movie/11111111111111/related')
+          .get('/movies/related/tt012033833333/movie')
           .end(function(err, res) {
-            res.status.should.equal(404);
+            res.status.should.equal(400);
             res.type.should.equal('application/json');
             res.body.should.be.a('object');
-            console.log(res.body);
             res.body.should.have.property('message');
-            res.body.message.should.equal('Not Found');
-            res.body.should.have.property('error');
+            res.body.message.should.equal('Invalid ID.  Please try again.');
+            res.body.should.have.property('status');
+            res.body.status.should.equal('danger');
             return done();
           });
       });
