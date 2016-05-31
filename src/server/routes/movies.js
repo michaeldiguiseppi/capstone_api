@@ -8,6 +8,7 @@ var request = require('request');
 
 router.get('/:upc', getTitle);
 router.get('/find/:title', getMovie);
+router.get('/:id/related', getRelated);
 
 ////////////////////////////////////////
 
@@ -53,6 +54,21 @@ function getMovie(req, res, next) {
       });
     }
 
+  });
+}
+
+function getRelated(req, res, next) {
+  var id = req.params.id;
+  var baseUrl = 'https://api-public.guidebox.com/v1.43/US/' + process.env.GUIDEBOX_KEY;
+  console.log(process.env.GUIDEBOX_KEY);
+  var options = {
+    method: 'GET',
+    url: baseUrl + '/movie/' + id + '/related'
+  };
+  request(options, function(err, resp, body) {
+    if (err) throw new Error(err);
+    console.log(body);
+    res.status(200).json(JSON.parse(body));
   });
 }
 
