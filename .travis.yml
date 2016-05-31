@@ -8,6 +8,8 @@ node_js:
 services: mongodb
 before_script:
 - npm install -g mocha
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 deploy:
   provider: heroku
   api_key:
