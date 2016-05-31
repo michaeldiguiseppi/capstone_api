@@ -1,0 +1,13 @@
+GET /api/097361468143
+host: movie_api.mikedee.xyz
+
+HTTP/1.1 200 OK
+server: nginx/1.8.1
+date: Tue, 31 May 2016 20:52:34 GMT
+content-type: application/json; charset=utf-8
+content-length: 65
+connection: close
+x-powered-by: Express
+etag: W/"41-JKL2oSZt3k+SeFrSbEJvhg"
+
+[{"id":259331,"DVD_Title":"Titanic (1997)","UPC":"097361468143"}]

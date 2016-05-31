@@ -7,6 +7,7 @@ var should = chai.should();
 var testUtilities = require('../utilities');
 var testSeed = require('../../src/server/models/seeds/users');
 var Users = require('../../src/server/models/users');
+var Replay = require('replay');
 
 chai.use(chaiHttp);
 

@@ -1,0 +1,14 @@
+GET /v1.43/US/rKnJYjpgj8YlkrQwF7LJkC9supgK4VjC/search/movie/id/imdb/tt0120338
+host: api-public.guidebox.com
+
+HTTP/1.1 200 OK
+cache-control: no-cache
+content-type: application/json
+date: Tue, 31 May 2016 20:54:47 GMT
+server: nginx/1.4.6 (Ubuntu)
+x-ratelimit-limit: 240
+x-ratelimit-remaining: 239
+content-length: 839
+connection: Close
+
+{"id":36647,"title":"Titanic","release_year":1997,"themoviedb":597,"original_title":"Titanic","alternate_titles":["The Ship of Dreams","Titanic (Digitally Remastered)","Titanic 1997"],"imdb":"tt0120338","pre_order":false,"in_theaters":false,"release_date":"1997-11-18","rating":"PG-13","rottentomatoes":22494,"freebase":"\/m\/0dr_4","wikipedia_id":52371,"metacritic":"http:\/\/www.metacritic.com\/movie\/titanic","common_sense_media":null,"poster_120x171":"http:\/\/static-api.guidebox.com\/thumbnails_movies_small\/36647-5530715389-9806926208-146575030-small-120x171.jpg","poster_240x342":"http:\/\/static-api.guidebox.com\/thumbnails_movies_medium\/36647-5152182430-4479204742-1523742560-medium-240x342.jpg","poster_400x570":"http:\/\/static-api.guidebox.com\/thumbnails_movies\/36647-1897279062-6353633636-1074108887-large-400x570.jpg"}
