@@ -24,11 +24,11 @@ describe('user routes', function() {
     testUtilities.dropDatabase(done);
   });
 
-  describe('/GET users/:user_id/movies', function() {
-    it('should return all movies for a user', function(done) {
+  describe('/GET users/:user_id/movies/:location', function() {
+    it('should return all movies for a users\' collection', function(done) {
       Users.findOne().then(function(user) {
         chai.request(server)
-          .get('/users/'+user._id+'/movies')
+          .get('/users/'+user._id+'/movies/collection')
           .end(function(err, res) {
             res.status.should.equal(200);
             res.type.should.equal('application/json');
@@ -39,6 +39,58 @@ describe('user routes', function() {
             res.body[0].Rated.should.equal('PG-13');
             res.body[0].should.have.property('Runtime');
             res.body[0].Runtime.should.equal('194 min');
+            return done();
+        });
+      });
+    });
+    it('should not return all movies for a users\' collection if the ID is wrong', function(done) {
+      Users.findOne().then(function(user) {
+        chai.request(server)
+          .get('/users/'+user._id+'2345/movies/wishlist')
+          .end(function(err, res) {
+            res.status.should.equal(404);
+            res.type.should.equal('application/json');
+            res.body.should.be.a('object');
+            res.body.should.have.property('status');
+            res.body.status.should.equal('danger');
+            res.body.should.have.property('data');
+            res.body.data.should.equal('User or Movies not found.');
+            return done();
+        });
+      });
+    });
+  });
+  describe('/GET users/:user_id/movies/:location', function() {
+    it('should return all movies for a users\' wishlist', function(done) {
+      Users.findOne().then(function(user) {
+        chai.request(server)
+          .get('/users/'+user._id+'/movies/wishlist')
+          .end(function(err, res) {
+            res.status.should.equal(200);
+            res.type.should.equal('application/json');
+            res.body.should.be.a('array');
+            res.body[0].should.be.a('object');
+            res.body[0].Title.should.equal('How to Train Your Dragon');
+            res.body[0].should.have.property('Rated');
+            res.body[0].Rated.should.equal('PG');
+            res.body[0].should.have.property('Runtime');
+            res.body[0].Runtime.should.equal('98 min');
+            return done();
+        });
+      });
+    });
+    it('should not return all movies for a users\' wishlist if the ID is wrong', function(done) {
+      Users.findOne().then(function(user) {
+        chai.request(server)
+          .get('/users/'+user._id+'2345/movies/wishlist')
+          .end(function(err, res) {
+            res.status.should.equal(404);
+            res.type.should.equal('application/json');
+            res.body.should.be.a('object');
+            res.body.should.have.property('status');
+            res.body.status.should.equal('danger');
+            res.body.should.have.property('data');
+            res.body.data.should.equal('User or Movies not found.');
             return done();
         });
       });
@@ -157,11 +209,15 @@ describe('user routes', function() {
             res.status.should.equal(200);
             res.body.should.be.a('object');
             res.body.wishlist.should.be.a('array');
-            res.body.wishlist.length.should.equal(1);
+            res.body.wishlist.length.should.equal(2);
             res.body.wishlist[0].should.have.property('Title');
-            res.body.wishlist[0].Title.should.equal('Scarface');
+            res.body.wishlist[0].Title.should.equal('How to Train Your Dragon');
             res.body.wishlist[0].should.have.property('Runtime');
-            res.body.wishlist[0].Runtime.should.equal('170 min');
+            res.body.wishlist[0].Runtime.should.equal('98 min');
+            res.body.wishlist[1].should.have.property('Title');
+            res.body.wishlist[1].Title.should.equal('Scarface');
+            res.body.wishlist[1].should.have.property('Runtime');
+            res.body.wishlist[1].Runtime.should.equal('170 min');
             return done();
         });
       });
@@ -229,11 +285,11 @@ describe('user routes', function() {
       });
     });
   });
-  describe('/PUT users/:user_id/movie/:id/delete', function() {
+  describe('/PUT users/:user_id/movie/:id/delete/collection', function() {
     it('should delete a single movie', function(done) {
       Users.findOne().then(function(user) {
         chai.request(server)
-        .put('/users/'+user._id+'/movie/'+user.movies[0].imdbID+'/delete')
+        .put('/users/'+user._id+'/movie/'+user.movies[0].imdbID+'/delete/collection')
         .end(function(err, res) {
           res.status.should.equal(200);
           res.type.should.equal('application/json');
@@ -246,6 +302,98 @@ describe('user routes', function() {
           res.body.data.should.have.property('email');
           res.body.data.movies.should.be.a('array');
           res.body.data.movies.length.should.equal(0);
+          return done();
+        });
+      });
+    });
+    it('should not delete a movie with a bad user ID', function(done) {
+      Users.findOne().then(function(user) {
+        chai.request(server)
+        .put('/users/'+user._id+'342/movie/'+user.movies[0].imdbID+'/delete/collection')
+        .end(function(err, res) {
+          res.status.should.equal(400);
+          res.type.should.equal('application/json');
+          res.body.should.be.a('object');
+          res.body.should.have.property('status');
+          res.body.status.should.equal('danger');
+          res.body.should.have.property('data');
+          res.body.data.should.be.a('string');
+          res.body.data.should.equal('Something went wrong.  Please try again.');
+          return done();
+        });
+      });
+    });
+    it('should not delete a movie with a bad imdb ID but shouldn\'t error', function(done) {
+      Users.findOne().then(function(user) {
+        chai.request(server)
+        .put('/users/'+user._id+'/movie/'+user.movies[0].imdbID+'342/delete/collection')
+        .end(function(err, res) {
+          res.status.should.equal(200);
+          res.type.should.equal('application/json');
+          res.body.should.be.a('object');
+          res.body.should.have.property('status');
+          res.body.status.should.equal('success');
+          res.body.should.have.property('data');
+          res.body.data.should.be.a('object');
+          return done();
+        });
+      });
+    });
+  });
+  describe('/PUT users/:user_id/movie/:id/delete/wishlist', function() {
+    it('should delete a single movie', function(done) {
+      Users.findOne().then(function(user) {
+        chai.request(server)
+        .put('/users/'+user._id+'/movie/'+user.wishlist[0].imdbID+'/delete/wishlist')
+        .end(function(err, res) {
+          res.status.should.equal(200);
+          res.type.should.equal('application/json');
+          res.body.should.be.a('object');
+          res.body.should.have.property('status');
+          res.body.status.should.equal('success');
+          res.body.should.have.property('data');
+          res.body.data.should.be.a('object');
+          res.body.data.should.have.property('username');
+          res.body.data.should.have.property('email');
+          res.body.data.should.have.property('movies');
+          res.body.data.movies.should.be.a('array');
+          res.body.data.should.have.property('wishlist');
+          res.body.data.wishlist.should.be.a('array');
+          res.body.data.movies.length.should.equal(1);
+          res.body.data.wishlist.length.should.equal(0);
+          return done();
+        });
+      });
+    });
+    it('should not delete a movie with a bad ID', function(done) {
+      Users.findOne().then(function(user) {
+        chai.request(server)
+        .put('/users/'+user._id+'324/movie/'+user.wishlist[0].imdbID+'/delete/wishlist')
+        .end(function(err, res) {
+          res.status.should.equal(400);
+          res.type.should.equal('application/json');
+          res.body.should.be.a('object');
+          res.body.should.have.property('status');
+          res.body.status.should.equal('danger');
+          res.body.should.have.property('data');
+          res.body.data.should.be.a('string');
+          res.body.data.should.equal('Something went wrong.  Please try again.');
+          return done();
+        });
+      });
+    });
+    it('should not delete a movie with a bad imdb ID but shouldn\'t error', function(done) {
+      Users.findOne().then(function(user) {
+        chai.request(server)
+        .put('/users/'+user._id+'/movie/'+user.wishlist[0].imdbID+'342/delete/wishlist')
+        .end(function(err, res) {
+          res.status.should.equal(200);
+          res.type.should.equal('application/json');
+          res.body.should.be.a('object');
+          res.body.should.have.property('status');
+          res.body.status.should.equal('success');
+          res.body.should.have.property('data');
+          res.body.data.should.be.a('object');
           return done();
         });
       });

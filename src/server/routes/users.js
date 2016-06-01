@@ -8,17 +8,22 @@ var request = require('request');
 if (process.env.NODE_ENV === 'development') { var config = require('../../_config'); }
 
 
-router.get('/:user_id/movies', getMovies);
+router.get('/:user_id/movies/:location', getMovies);
 router.post('/:user_id/movie/add/:location', insertMovie);
 router.get('/:user_id/streaming/:id/:type', getStreamingSources);
-router.put('/:user_id/movie/:id/delete', deleteMovie);
+router.put('/:user_id/movie/:id/delete/:location', deleteMovie);
 
 ///////////////////////////////////////////////////////////
 
 function getMovies(req, res, next) {
+  var location = req.params.location;
   User.findById(req.params.user_id)
   .then(function(user) {
-    res.status(200).json(user.movies);
+    if (location === 'collection') {
+      res.status(200).json(user.movies);
+    } else {
+      res.status(200).json(user.wishlist);
+    }
   })
   .catch(function(err) {
     res.status(404).json({status: 'danger', data: 'User or Movies not found.'});
@@ -83,14 +88,26 @@ function getStreamingSources(req, res, next) {
 
 function deleteMovie(req, res, next) {
   var query = { _id: req.params.user_id };
+  var location = req.params.location;
+  if (location === 'collection') {
+    User.findByIdAndUpdate(query, { $pull: { movies: { imdbID: req.params.id }}}, {new: true})
+    .then(function(data) {
+      res.status(200).json({status: 'success', data: data});
+    })
+    .catch(function(err) {
+      res.status(400).json({status: 'danger', data: 'Something went wrong.  Please try again.'});
+    });
+  } else {
+    User.findByIdAndUpdate(query, { $pull: { wishlist: { imdbID: req.params.id }}}, {new: true})
+    .then(function(data) {
+      res.status(200).json({status: 'success', data: data});
+    })
+    .catch(function(err) {
+      res.status(400).json({status: 'danger', data: 'Something went wrong.  Please try again.'});
+    });
+  }
 
-  User.findOneAndUpdate(query, { $pull: { movies: { imdbID: req.params.id }}}, {new: true})
-  .then(function(data) {
-    res.status(200).json({status: 'success', data: data});
-  })
-  .catch(function(err) {
-    res.status(400).json({status: 'danger', data: err});
-  });
+
 }
 
 module.exports = router;

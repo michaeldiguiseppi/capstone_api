@@ -31,7 +31,29 @@ function seedData () {
         imdbID: "tt0120338",
         Type: "movie",
         Response: "True"
-        }]
+      }],
+      "wishlist": [{
+        Title: "How to Train Your Dragon",
+        Year: "2010",
+        Rated: "PG",
+        Released: "26 Mar 2010",
+        Runtime: "98 min",
+        Genre: "Animation, Adventure, Family",
+        Director: "Dean DeBlois, Chris Sanders",
+        Writer: "William Davies (screenplay), Dean DeBlois (screenplay), Chris Sanders (screenplay), Cressida Cowell (book)",
+        Actors: "Jay Baruchel, Gerard Butler, Craig Ferguson, America Ferrera",
+        Plot: "A hapless young Viking who aspires to hunt dragons, becomes the unlikely friend of a young dragon himself, and learns there may be more to the creatures than he assumed.",
+        Language: "English",
+        Country: "USA",
+        Awards: "Nominated for 2 Oscars. Another 25 wins & 58 nominations.",
+        Poster: "http://ia.media-imdb.com/images/M/MV5BMjA5NDQyMjc2NF5BMl5BanBnXkFtZTcwMjg5ODcyMw@@._V1_SX300.jpg",
+        Metascore: "74",
+        imdbRating: "8.2",
+        imdbVotes: "474,005",
+        imdbID: "tt0892769",
+        Type: "movie",
+        Response: "True"
+      }]
     });
   return user.save();
 }
