@@ -21,6 +21,9 @@ var UserSchema = new Schema({
   movies: {
     type: Array,
   },
+  wishlist: {
+    type: Array,
+  },
 });
 
 // hash password before saving it to DB

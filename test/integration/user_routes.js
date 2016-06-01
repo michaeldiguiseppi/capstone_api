@@ -44,11 +44,11 @@ describe('user routes', function() {
       });
     });
   });
-  describe('/POST users/:user_id/movie/add', function() {
+  describe('/POST users/:user_id/movie/add/collection', function() {
     it('should insert one movie', function(done) {
       Users.findOne().then(function(user) {
         chai.request(server)
-          .post('/users/'+user._id+'/movie/add')
+          .post('/users/'+user._id+'/movie/add/collection')
           .send({
             Title: "Scarface",
             Year: "1983",
@@ -84,6 +84,47 @@ describe('user routes', function() {
             res.body.movies[1].Title.should.equal('Scarface');
             res.body.movies[1].should.have.property('Runtime');
             res.body.movies[1].Runtime.should.equal('170 min');
+            return done();
+        });
+      });
+    });
+  });
+  describe('/POST users/:user_id/movie/add/wishlist', function() {
+    it('should insert one movie to the wishlist', function(done) {
+      Users.findOne().then(function(user) {
+        chai.request(server)
+          .post('/users/'+user._id+'/movie/add/wishlist')
+          .send({
+            Title: "Scarface",
+            Year: "1983",
+            Rated: "R",
+            Released: "09 Dec 1983",
+            Runtime: "170 min",
+            Genre: "Crime, Drama",
+            Director: "Brian De Palma",
+            Writer: "Oliver Stone (screenplay)",
+            Actors: "Al Pacino, Steven Bauer, Michelle Pfeiffer, Mary Elizabeth Mastrantonio",
+            Plot: "In 1980 Miami, a determined Cuban immigrant takes over a drug cartel while succumbing to greed.",
+            Language: "English, Spanish",
+            Country: "USA",
+            Awards: "Nominated for 3 Golden Globes. Another 4 nominations.",
+            Poster: "http://ia.media-imdb.com/images/M/MV5BMjAzOTM4MzEwNl5BMl5BanBnXkFtZTgwMzU1OTc1MDE@._V1_SX300.jpg",
+            Metascore: "65",
+            imdbRating: "8.3",
+            imdbVotes: "525,616",
+            imdbID: "tt0086250",
+            Type: "movie",
+            Response: "True"
+          })
+          .end(function(err, res) {
+            res.status.should.equal(200);
+            res.body.should.be.a('object');
+            res.body.wishlist.should.be.a('array');
+            res.body.wishlist.length.should.equal(1);
+            res.body.wishlist[0].should.have.property('Title');
+            res.body.wishlist[0].Title.should.equal('Scarface');
+            res.body.wishlist[0].should.have.property('Runtime');
+            res.body.wishlist[0].Runtime.should.equal('170 min');
             return done();
         });
       });

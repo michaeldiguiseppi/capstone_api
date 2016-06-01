@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'development') { var config = require('../../_confi
 
 
 router.get('/:user_id/movies', getMovies);
-router.post('/:user_id/movie/add', insertMovie);
+router.post('/:user_id/movie/add/:location', insertMovie);
 router.get('/:user_id/streaming/:id/:type', getStreamingSources);
 router.put('/:user_id/movie/:id/delete', deleteMovie);
 
@@ -26,13 +26,24 @@ function getMovies(req, res, next) {
 }
 
 function insertMovie(req, res, next) {
+  var location = req.params.location;
   var movie = new Movie(req.body);
-  User.findByIdAndUpdate(req.params.user_id, {$addToSet: {movies: movie}}, {new: true})
-  .then(function(user) {
-    res.status(200).json(user);
-  }).catch(function(err) {
-    res.status(400).json({status: 'danger', data: 'Movie failed to insert.  Please try again.'});
-  });
+  if (location === 'collection') {
+    User.findByIdAndUpdate(req.params.user_id, {$addToSet: {movies: movie}}, {new: true})
+    .then(function(user) {
+      res.status(200).json(user);
+    }).catch(function(err) {
+      res.status(400).json({status: 'danger', data: 'Movie failed to insert.  Please try again.'});
+    });
+  } else {
+    User.findByIdAndUpdate(req.params.user_id, {$addToSet: {wishlist: movie}}, {new: true})
+    .then(function(user) {
+      res.status(200).json(user);
+    }).catch(function(err) {
+      res.status(400).json({status: 'danger', data: 'Movie failed to insert.  Please try again.'});
+    });
+  }
+
 }
 
 
