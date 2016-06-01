@@ -4,3 +4,5 @@
 
 
 This is the Node.js/Express.js API that I built to power the back end of my MMDB Ionic Application.  The API uses MongoDB and Mongoose for data persistence.
+
+The API Documentation can be found [here](http://mmdb-api.herokuapp.com/api-docs).
