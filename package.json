@@ -5,8 +5,8 @@
   "private": false,
   "scripts": {
     "start": "node ./src/server/bin/www",
-    "test": "mocha",
-    "coverage": "istanbul cover _mocha -- -R spec"
+    "test": "./node_modules/istanbul/lib/cli.js cover ./node_modules/.bin/_mocha",
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
   },
   "dependencies": {
     "bcryptjs": "^2.3.0",
@@ -28,6 +28,7 @@
     "browser-sync": "2.9.6",
     "chai": "^3.5.0",
     "chai-http": "^2.0.1",
+    "coveralls": "^2.11.9",
     "faker": "^3.1.0",
     "gulp": "^3.9.0",
     "gulp-clean": "^0.3.1",
@@ -40,6 +41,7 @@
     "istanbul": "^0.4.3",
     "jshint-stylish": "^2.0.1",
     "mocha": "^2.5.1",
+    "mocha-lcov-reporter": "^1.2.0",
     "replay": "^2.0.6",
     "run-sequence": "^1.1.4"
   }
