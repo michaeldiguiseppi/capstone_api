@@ -88,6 +88,43 @@ describe('user routes', function() {
         });
       });
     });
+    it('should not insert a movie with a bad user_id into the collection', function(done) {
+      Users.findOne().then(function(user) {
+        chai.request(server)
+          .post('/users/'+user._id+'2345/movie/add/collection')
+          .send({
+            Title: "Scarface",
+            Year: "1983",
+            Rated: "R",
+            Released: "09 Dec 1983",
+            Runtime: "170 min",
+            Genre: "Crime, Drama",
+            Director: "Brian De Palma",
+            Writer: "Oliver Stone (screenplay)",
+            Actors: "Al Pacino, Steven Bauer, Michelle Pfeiffer, Mary Elizabeth Mastrantonio",
+            Plot: "In 1980 Miami, a determined Cuban immigrant takes over a drug cartel while succumbing to greed.",
+            Language: "English, Spanish",
+            Country: "USA",
+            Awards: "Nominated for 3 Golden Globes. Another 4 nominations.",
+            Poster: "http://ia.media-imdb.com/images/M/MV5BMjAzOTM4MzEwNl5BMl5BanBnXkFtZTgwMzU1OTc1MDE@._V1_SX300.jpg",
+            Metascore: "65",
+            imdbRating: "8.3",
+            imdbVotes: "525,616",
+            imdbID: "tt0086250",
+            Type: "movie",
+            Response: "True"
+          })
+          .end(function(err, res) {
+            res.status.should.equal(400);
+            res.body.should.be.a('object');
+            res.body.should.have.property('status');
+            res.body.status.should.equal('danger');
+            res.body.should.have.property('data');
+            res.body.data.should.equal('Movie failed to insert.  Please try again.');
+            return done();
+        });
+      });
+    });
   });
   describe('/POST users/:user_id/movie/add/wishlist', function() {
     it('should insert one movie to the wishlist', function(done) {
@@ -125,6 +162,43 @@ describe('user routes', function() {
             res.body.wishlist[0].Title.should.equal('Scarface');
             res.body.wishlist[0].should.have.property('Runtime');
             res.body.wishlist[0].Runtime.should.equal('170 min');
+            return done();
+        });
+      });
+    });
+    it('should not insert a movie with a bad user_id into the wishlist', function(done) {
+      Users.findOne().then(function(user) {
+        chai.request(server)
+          .post('/users/'+user._id+'2345/movie/add/collection')
+          .send({
+            Title: "Scarface",
+            Year: "1983",
+            Rated: "R",
+            Released: "09 Dec 1983",
+            Runtime: "170 min",
+            Genre: "Crime, Drama",
+            Director: "Brian De Palma",
+            Writer: "Oliver Stone (screenplay)",
+            Actors: "Al Pacino, Steven Bauer, Michelle Pfeiffer, Mary Elizabeth Mastrantonio",
+            Plot: "In 1980 Miami, a determined Cuban immigrant takes over a drug cartel while succumbing to greed.",
+            Language: "English, Spanish",
+            Country: "USA",
+            Awards: "Nominated for 3 Golden Globes. Another 4 nominations.",
+            Poster: "http://ia.media-imdb.com/images/M/MV5BMjAzOTM4MzEwNl5BMl5BanBnXkFtZTgwMzU1OTc1MDE@._V1_SX300.jpg",
+            Metascore: "65",
+            imdbRating: "8.3",
+            imdbVotes: "525,616",
+            imdbID: "tt0086250",
+            Type: "movie",
+            Response: "True"
+          })
+          .end(function(err, res) {
+            res.status.should.equal(400);
+            res.body.should.be.a('object');
+            res.body.should.have.property('status');
+            res.body.status.should.equal('danger');
+            res.body.should.have.property('data');
+            res.body.data.should.equal('Movie failed to insert.  Please try again.');
             return done();
         });
       });
