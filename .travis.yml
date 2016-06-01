@@ -5,6 +5,7 @@ services: mongodb
 before_script:
 - npm install -g mocha
 script: npm run coverage
+after_success: 'npm run coveralls'
 deploy:
   provider: heroku
   api_key:
