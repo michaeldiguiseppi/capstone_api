@@ -106,8 +106,6 @@ function deleteMovie(req, res, next) {
       res.status(400).json({status: 'danger', data: 'Something went wrong.  Please try again.'});
     });
   }
-
-
 }
 
 module.exports = router;
