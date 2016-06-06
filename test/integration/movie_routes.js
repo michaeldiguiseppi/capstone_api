@@ -54,8 +54,8 @@ describe('movie routes', function() {
             res.body.should.be.a('object');
             res.body.should.have.property('status');
             res.body.status.should.equal('danger');
-            res.body.should.have.property('message');
-            res.body.message.should.equal('Something went wrong. Please try again.');
+            res.body.should.have.property('data');
+            res.body.data.should.equal('Something went wrong. Please try again.');
             return done();
           });
       });
@@ -90,8 +90,8 @@ describe('movie routes', function() {
             res.body.should.be.a('object');
             res.body.should.have.property('status');
             res.body.status.should.equal('danger');
-            res.body.should.have.property('message');
-            res.body.message.should.equal('Invalid title.  Please try again.');
+            res.body.should.have.property('data');
+            res.body.data.should.equal('Invalid title.  Please try again.');
             return done();
           });
       });
@@ -105,12 +105,12 @@ describe('movie routes', function() {
           res.type.should.equal('application/json');
           res.body.should.be.a('object');
           res.body.should.have.property('total_results');
-          res.body.total_results.should.equal(26);
+          res.body.total_results.should.equal(25);
           res.body.should.have.property('results');
           res.body.results.should.be.a('array');
-          res.body.results.length.should.equal(26);
+          res.body.results.length.should.equal(25);
           res.body.results[0].should.be.a('object');
-          res.body.results[0].title.should.equal('Iron Man');
+          res.body.results[0].title.should.equal('The Hunger Games');
           return done();
         });
       });
@@ -121,8 +121,8 @@ describe('movie routes', function() {
             res.status.should.equal(400);
             res.type.should.equal('application/json');
             res.body.should.be.a('object');
-            res.body.should.have.property('message');
-            res.body.message.should.equal('Invalid ID.  Please try again.');
+            res.body.should.have.property('data');
+            res.body.data.should.equal('Invalid ID.  Please try again.');
             res.body.should.have.property('status');
             res.body.status.should.equal('danger');
             return done();
