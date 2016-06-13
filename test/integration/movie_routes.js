@@ -110,7 +110,7 @@ describe('movie routes', function() {
           res.body.results.should.be.a('array');
           res.body.results.length.should.equal(25);
           res.body.results[0].should.be.a('object');
-          res.body.results[0].title.should.equal('The Hunger Games');
+          res.body.results[0].title.should.equal('Forrest Gump');
           return done();
         });
       });
