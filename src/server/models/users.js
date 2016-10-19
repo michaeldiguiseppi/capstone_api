@@ -24,6 +24,18 @@ var UserSchema = new Schema({
   wishlist: {
     type: Array,
   },
+  created_date: {
+    type: Date,
+    default: Date.now
+  },
+  last_login_date: {
+    type: Date,
+    default: Date.now
+  },
+  allow_emails: {
+    type: Boolean,
+    default: false,
+  }
 });
 
 // hash password before saving it to DB

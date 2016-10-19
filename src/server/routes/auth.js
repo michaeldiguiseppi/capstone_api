@@ -6,6 +6,7 @@ var jwt = require('jwt-simple');
 
 router.post('/register', registerUser);
 router.post('/login', loginUser);
+router.put('/update_password', updatePassword);
 
 ////////////////////////////////////////////
 
@@ -53,7 +54,7 @@ function registerUser (req, res, next) {
 
  function loginUser (req, res, next) {
   // ensure that user exists
-  User.findOne({email: req.body.email.toLowerCase()})
+  User.findOne({ email: req.body.email.toLowerCase()})
   .then(function (user) {
     if (!user) {
       return res.status(401).json({
@@ -69,6 +70,7 @@ function registerUser (req, res, next) {
           requestBody: req.body
         });
       }
+      // check that the password is correct
       user.comparePassword(req.body.password, function (err, match) {
         if (err) {
           return next(err);
@@ -80,20 +82,57 @@ function registerUser (req, res, next) {
             requestBody: req.body
           });
         }
-      user = user.toObject();
-      delete user.password;
-      var token = generateToken(user);
-      res.status(200).json({
-        status: 'success',
-        message: {
-          token: token,
-          user: user
-        }
+      // update the user's last_login_date if successful login
+      User.findOneAndUpdate({email: user.email}, { $set: {"last_login_date": Date.now() }}, {new: true})
+      .then(function(user) {
+        user = user.toObject();
+        delete user.password;
+        var token = generateToken(user);
+        res.status(200).json({
+          status: 'success',
+          message: {
+            token: token,
+            user: user
+          }
+        });
       });
     });
   })
   .catch(function (err) {
     return next(err);
+  });
+}
+
+function updatePassword (req, res, next) {
+  User.findOne({email: req.body.email})
+  .then(function(user) {
+    if (!user) {
+      return res.status(401).json({
+        status: 'danger',
+        message: 'User does not exist',
+        requestBody: req.body
+      });
+    } else
+      if ( !req.body.password ) {
+        return res.status(401).json({
+          status: 'danger',
+          message: 'Missing password.',
+          requestBody: req.body
+        });
+      }
+    user.password = req.body.password;
+    user.save().then(function() {
+      res.status(200).json({
+        status: 'success',
+        message: 'Password updated successfully.'
+      });
+    })
+    .catch(function(err) {
+      res.status(401).json({
+        status: 'danger',
+        message: err
+      });
+    });
   });
 }
 

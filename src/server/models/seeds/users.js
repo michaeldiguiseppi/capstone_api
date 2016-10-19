@@ -10,6 +10,7 @@ function seedData () {
     	"username" : "MikeDeeGee",
     	"email" : "mike@gmail.com",
       "password": "password",
+      "allow_emails": true,
     	"movies" : [{
         Title: "Titanic",
         Year: "1997",
