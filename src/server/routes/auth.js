@@ -121,17 +121,16 @@ function updatePassword (req, res, next) {
         });
       }
     user.password = req.body.password;
-    user.save().then(function() {
+
+    user.save()
+    .then(function() {
       res.status(200).json({
         status: 'success',
         message: 'Password updated successfully.'
       });
     })
     .catch(function(err) {
-      res.status(401).json({
-        status: 'danger',
-        message: err
-      });
+      return next(err);
     });
   });
 }
