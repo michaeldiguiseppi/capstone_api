@@ -113,25 +113,37 @@ function updatePassword (req, res, next) {
         requestBody: req.body
       });
     } else
-      if ( !req.body.password ) {
+      if ( !req.body.new_password ) {
         return res.status(401).json({
           status: 'danger',
-          message: 'Missing password.',
+          message: 'Missing new password.',
           requestBody: req.body
         });
       }
-    user.password = req.body.password;
+      user.comparePassword(req.body.old_password, function (err, match) {
+        if (err) {
+          return next(err);
+        }
+        if (!match) {
+          return res.status(401).json({
+            status: 'danger',
+            message: 'Old password is not correct',
+            requestBody: req.body
+          });
+        }
+        user.password = req.body.new_password;
 
-    user.save()
-    .then(function() {
-      res.status(200).json({
-        status: 'success',
-        message: 'Password updated successfully.'
+        user.save()
+        .then(function() {
+          res.status(200).json({
+            status: 'success',
+            message: 'Password updated successfully.'
+          });
+        })
+        .catch(function(err) {
+          return next(err);
+        });
       });
-    })
-    .catch(function(err) {
-      return next(err);
-    });
   });
 }
 
