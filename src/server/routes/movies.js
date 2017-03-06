@@ -16,7 +16,7 @@ function getTitle(req, res, next) {
   var upc = req.params.upc;
   var options = {
     method: 'GET',
-    url: 'http://movie_api.mikedee.xyz/api/' + upc,
+    url: 'http://mmdb-upc.herokuapp.com/api/' + upc,
   };
   request(options, function (error, response, body) {
     if (error) throw new Error(error);
