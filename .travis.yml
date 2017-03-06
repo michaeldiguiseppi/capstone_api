@@ -6,15 +6,15 @@ before_script:
 - npm install -g mocha
 script: npm run coverage
 after_success: 'npm run coveralls'
-deploy:
-  provider: heroku
-  api_key:
-    secure: iQBGhYaLbXTSuHXyZmYXs/Db/2IH5xWtEdpPDpXCpAkAp2z3lFmGre2Yw7qyFeYoidz9w1hI/SR4rplKLXg2SeU2cye+VzXiimr4zT8beEalYj4q2oR/QlCQR64Zj7yvV6YMkYr9Y8yll3tRK/5+lD8Qm4gNHQA+0oY/Tfen/HbkORjJC8Ia3bWSPFmsBh/VzquXg0ee1Jpo5zM9ZWq7dTQYSD4jAz8oK1hZnLco+GoeiZyGqiwYm1S29KCFc2lopfM/oj9ZfWNu2bl/uJPafF9p5lz5eGHfOH112WgAS/A4m5N9xZ/wRUeQqqhLAFEtuf3+eHvRQxQPIRgDFSMGbmpUo2WEVgjqkvwi/8OV0UdeSZGqvWdGLJSfBraJh8DAaNbYmgRkj3yRc9y6PbbfuTV2KHg5qozzJQ79b4yuWSotzbC3NSDROrLFbP00GER/2YcDSXxBo23/Gh/2qVp2EIYD0pV5/7RQYpp1y1/NoJxIA1FeqNwsv9nsn+UhmNuEzAHzFBw0r0dmVMvmK3Ku3Ystq4HVlytvVSZUaxgkHCjb35XhFVg00Uh/YahIA4rtj2+qDm04MtnyYguCY+JNT1K+gZAlbSlH/oRktJJzPWdiUZHOEJJ3dcU2lXYdhMurDIr5TGGZlwmqm2C4cMUczFd++L5LXhnYtRGWJDZ7lp4=
-  app: mmdb-api
-  on:
-    repo: michaeldiguiseppi/capstone_api
-    branch: master
-    node: '5'
+# deploy:
+#   provider: heroku
+#   api_key:
+#     secure: iQBGhYaLbXTSuHXyZmYXs/Db/2IH5xWtEdpPDpXCpAkAp2z3lFmGre2Yw7qyFeYoidz9w1hI/SR4rplKLXg2SeU2cye+VzXiimr4zT8beEalYj4q2oR/QlCQR64Zj7yvV6YMkYr9Y8yll3tRK/5+lD8Qm4gNHQA+0oY/Tfen/HbkORjJC8Ia3bWSPFmsBh/VzquXg0ee1Jpo5zM9ZWq7dTQYSD4jAz8oK1hZnLco+GoeiZyGqiwYm1S29KCFc2lopfM/oj9ZfWNu2bl/uJPafF9p5lz5eGHfOH112WgAS/A4m5N9xZ/wRUeQqqhLAFEtuf3+eHvRQxQPIRgDFSMGbmpUo2WEVgjqkvwi/8OV0UdeSZGqvWdGLJSfBraJh8DAaNbYmgRkj3yRc9y6PbbfuTV2KHg5qozzJQ79b4yuWSotzbC3NSDROrLFbP00GER/2YcDSXxBo23/Gh/2qVp2EIYD0pV5/7RQYpp1y1/NoJxIA1FeqNwsv9nsn+UhmNuEzAHzFBw0r0dmVMvmK3Ku3Ystq4HVlytvVSZUaxgkHCjb35XhFVg00Uh/YahIA4rtj2+qDm04MtnyYguCY+JNT1K+gZAlbSlH/oRktJJzPWdiUZHOEJJ3dcU2lXYdhMurDIr5TGGZlwmqm2C4cMUczFd++L5LXhnYtRGWJDZ7lp4=
+#   app: mmdb-api
+#   on:
+#     repo: michaeldiguiseppi/capstone_api
+#     branch: master
+#     node: '5'
 env:
   matrix:
     secure: fmUxgk7w5+hiqRm7GIBQRFf4cyiuAKl/subNsUp/jgXeL+yrWeI1HSiZ1HQWSw8zUV0Mw+wJaStHRLuZtq2BpyF7lXSVdUekpWi7i7lgAGwVeW3I62s/sBnTTtvvEAXMTQkqxqgqYqEFBVQJ+IYJgeaS571GQ5lcXwohavpWNJHVvWoZb1qGxqWFWRhpyucLYQ/0g0CCAtSP1RemBznrsRTT4in7GzcoLEknmgkO8ur4sJVBwHcRuCz5TGjVemohW5DL4hqHQJp3eU1EY5x1+wkPQgIVYgV7iF2oFB++VjQmgg46MdG/Pw4cAXrP6VVRH7FLn60eXnrsNPEMq8kbRce1K7cCePIXtFQyBmAKq8Pn0EGedfQvAkd2x3WngKvGrJeaqiygLu+PLs+9oLR31iMEPB63RTuc1lmoV010hC21lqP5SfD5cHQrdbSVbo7e8LKlwWo/AvkkmqGWK4hy80//MsFub8ti2WarYL0zk8M/SCy0WcMSA8B8E4p1A9VZBupL97HyF21WvD56Icq1XbYQ/4BxrNBb2U2MIWoA4R+AG3EToWXcqCkYNqKaxHyN81Mg4yXO4qFSXMZqiPpu7Kgv9GGpH3WBZbVMZsdT7eLntYn9jofGdEkCOidbYZtXw0F657WaKT0LyqKqCy15oqXUgrhxWmAAz3R+prnf9AY=
