@@ -25,7 +25,7 @@ function getTitle(req, res, next) {
       var title = JSON.parse(body)[0].DVD_Title.split('(')[0];
       var options = {
         method: 'GET',
-        url: 'http://omdbapi.com/?t=' + title,
+        url: 'http://omdbapi.com/?t=' + title + '&apikey=' + process.env.API_KEY,
       };
       request(options, function (err, resp, bod) {
         if (err) throw new Error(err);
@@ -41,7 +41,7 @@ function getMovie(req, res, next) {
   var title = req.params.title;
   var options = {
     method: 'GET',
-    url: 'http://omdbapi.com/?t=' + title,
+    url: 'http://omdbapi.com/?t=' + title + '&apikey=' + process.env.API_KEY,
   };
   request(options, function (err, resp, bod) {
     if (err) throw new Error(err);
