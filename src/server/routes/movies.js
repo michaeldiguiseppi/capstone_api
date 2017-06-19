@@ -9,6 +9,8 @@ var request = require('request');
 router.get('/:upc', getTitle);
 router.get('/find/:title', getMovie);
 router.get('/related/:id/:type', getRelated);
+router.get('/searchById/:imdbID', searchOneMovie);
+router.get('/search/:title/:type/:year?', searchMovies);
 
 ////////////////////////////////////////
 
@@ -54,6 +56,41 @@ function getMovie(req, res, next) {
       });
     }
 
+  });
+}
+
+function searchMovies(req, res, next) {
+  var title = req.params.title;
+  var type = req.params.type;
+  var year = req.params.year;
+  var options =  {
+    method: 'GET',
+    url: 'http://omdbapi.com/?s=' + title + '&type=' + type + '&y=' + year + '&apikey=' + process.env.API_KEY
+  };
+
+  request(options, function(err, resp, body) {
+    if (err) throw new Error(err);
+    res.send(JSON.parse(body));
+  });
+}
+
+function searchOneMovie(req, res, next) {
+  var id = req.params.imdbID;
+  var options = {
+    method: 'GET',
+    url: 'http://omdbapi.com/?i=' + id + '&apikey=' + process.env.API_KEY
+  };
+
+  request(options, function(err, resp, body) {
+    if (err) throw new Error(err);
+    if (JSON.parse(body).Title) {
+      res.status(200).json(JSON.parse(body));
+    } else {
+      res.status(400).json({
+        status: 'danger',
+        data: 'Invalid ImdbID. Please try again.'
+      });
+    }
   });
 }
 
